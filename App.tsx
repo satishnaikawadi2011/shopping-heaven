@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Provider as PaperProvider, Text } from 'react-native-paper';
+import AppButton from './src/components/UI/Button';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 import { theme } from './src/theme/theme';
 
 export default function App() {
@@ -19,10 +21,10 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			<View style={styles.container}>
-				<Text>Open up App.tsx to start working on your app!</Text>
-				<StatusBar style="auto" />
-			</View>
+			<WelcomeScreen />
+			{/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+				<AppButton title="Login" onPress={() => console.log('Pressed')} />
+			</View> */}
 		</PaperProvider>
 	);
 }
