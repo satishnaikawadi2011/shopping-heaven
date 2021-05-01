@@ -1,6 +1,7 @@
 import React from 'react';
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../../../constants/colors';
+import { Text } from 'react-native-paper';
 
 interface ButtonProps {
 	title: string;
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
 	text:
 		{
 			color: Colors.white,
-			fontFamily: 'UbuntuRegular',
 			fontSize: 18,
 			textTransform: 'uppercase',
 			fontWeight: 'bold'
