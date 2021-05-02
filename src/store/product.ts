@@ -1,10 +1,9 @@
 import create from 'zustand';
 
-export const useAuthStore = create((set, get) => ({
-	token: null,
-	expiryDate: null,
-	userId: null,
-	setToken: (token: string) => set((state) => ({ ...state, token: token })),
+export const useProductStore = create((set, get) => ({
+	products: [],
+	categories: [],
+	setProducts: (token: string) => set((state) => ({ ...state, token: token })),
 	setUserId: (userId: string) => set((state) => ({ ...state, userId })),
 	setExpiryDate: (expiryDate: string) => set((state) => ({ ...state, expiryDate }))
 }));
