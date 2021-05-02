@@ -7,14 +7,16 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppButton from '../components/UI/Button';
 
-const LoginScreen = () => {
+const SignupScreen = () => {
 	const initialValues = {
 		email: '',
-		password: ''
+		password: '',
+		username: ''
 	};
 	const authSchema = Yup.object({
 		email: Yup.string().required().email(),
-		password: Yup.string().required().min(6).max(12)
+		password: Yup.string().required().min(6).max(12),
+		username: Yup.string().required().min(4).max(16)
 	});
 	const submitHandler = async (values: any, actions: any) => {
 		// try {
@@ -69,6 +71,39 @@ const LoginScreen = () => {
 							<TextInput
 								mode="outlined"
 								style={styles.input}
+								label="Username"
+								left={<TextInput.Icon name="account-circle" />}
+								value={props.values.username}
+								keyboardType="default"
+								onChangeText={props.handleChange('username')}
+								placeholder="Enter your username ..."
+								onBlur={props.handleBlur('username')}
+								underlineColor={Colors.primary}
+								selectionColor={Colors.primary}
+								error={
+
+										props.touched.username && props.errors.username ? true :
+										false
+								}
+							/>
+							{props.errors.username &&
+							props.touched.username && (
+								<HelperText
+									style={{ textAlign: 'center' }}
+									type="error"
+									visible={
+
+											props.touched.username && props.errors.username ? true :
+											false
+									}
+								>
+									{props.errors.username}
+								</HelperText>
+							)}
+
+							<TextInput
+								mode="outlined"
+								style={styles.input}
 								label="Password"
 								value={props.values.password}
 								secureTextEntry
@@ -99,18 +134,13 @@ const LoginScreen = () => {
 								</HelperText>
 							)}
 							<AppButton
-								// width={Dimensions.get('window').width * 0.9}
-								// style={styles.btn}
-								// loading={loading}
-								title="sign in"
+								title="sign up"
 								onPress={// !loading ? props.handleSubmit :
 								() => {}}
 							/>
 							<AppButton
-								// width={Dimensions.get('window').width * 0.9}
-								// style={styles.btn}
 								bgColor={Colors.accent}
-								title="register here"
+								title="login here"
 								onPress={() => {
 									// !loading ? navigation.navigate('Signup') :
 									// null;
@@ -124,7 +154,7 @@ const LoginScreen = () => {
 	);
 };
 
-export default LoginScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
 	logo:

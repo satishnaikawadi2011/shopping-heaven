@@ -6,6 +6,8 @@ import { Card, Provider as PaperProvider, Subheading, Text, Title } from 'react-
 import { Colors } from './constants/colors';
 import AppButton from './src/components/UI/Button';
 import ProductCard from './src/components/UI/ProductCard';
+import LoginScreen from './src/screens/LoginScreen';
+import SignupScreen from './src/screens/SignupScreen';
 import ProductDetailScreen from './src/screens/ProductDetailScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import { theme } from './src/theme/theme';
@@ -25,18 +27,8 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			<ProductDetailScreen />
-			{/* <WelcomeScreen /> */}
-			{/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<AppButton title="Login" onPress={() => console.log('Pressed')} />
-			</View> */}
-			{/* <View style={{ padding: 20, paddingTop: 120, backgroundColor: '#f8f4f4' }}>
-				<ProductCard
-					coverUri="https://cdn.pixabay.com/photo/2014/12/03/06/31/showroom-555113__340.jpg"
-					price={200}
-					title={'Pollo Material'}
-				/>
-			</View> */}
+			{/* <LoginScreen /> */}
+			<SignupScreen />
 		</PaperProvider>
 	);
 }
