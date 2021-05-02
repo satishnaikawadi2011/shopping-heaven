@@ -1,9 +1,17 @@
 import create from 'zustand';
+import { Category } from '../models/Category';
+import { Product } from '../models/Product';
 
-export const useProductStore = create((set, get) => ({
+type ProductStore = {
+	products: Product[];
+	categories: Category[];
+	setProducts: (products: Product[]) => void;
+	setCategories: (categories: Category[]) => void;
+};
+
+export const useProductStore = create<ProductStore>((set, get) => ({
 	products: [],
 	categories: [],
-	setProducts: (token: string) => set((state) => ({ ...state, token: token })),
-	setUserId: (userId: string) => set((state) => ({ ...state, userId })),
-	setExpiryDate: (expiryDate: string) => set((state) => ({ ...state, expiryDate }))
+	setProducts: (products: Product[]) => set((state) => ({ ...state, products })),
+	setCategories: (categories: Category[]) => set((state) => ({ ...state, categories }))
 }));
