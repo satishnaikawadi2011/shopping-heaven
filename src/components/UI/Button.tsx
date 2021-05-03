@@ -1,24 +1,28 @@
 import React from 'react';
 import { GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../../../constants/colors';
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 
 interface ButtonProps {
 	title: string;
 	bgColor?: string;
 	titleColor?: string;
-	onPress?: ((event: GestureResponderEvent) => void) | undefined;
+	loading?: boolean;
+	onPress?: () => void;
 }
 
 const AppButton: React.FC<ButtonProps> = ({
 	title,
 	bgColor = Colors.primary,
 	titleColor = Colors.white,
+	loading = false,
 	onPress = () => {}
 }) => {
 	return (
 		<TouchableOpacity onPress={onPress} style={{ ...styles.button, backgroundColor: bgColor }}>
-			<Text style={{ ...styles.text, color: titleColor }}>{title}</Text>
+			{
+				loading ? <ActivityIndicator size="small" color={Colors.white} /> :
+				<Text style={{ ...styles.text, color: titleColor }}>{title}</Text>}
 		</TouchableOpacity>
 	);
 };

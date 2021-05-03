@@ -1,32 +1,38 @@
+import { RouteProp, useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Divider, Paragraph, Subheading, Title, useTheme } from 'react-native-paper';
 import { Colors } from '../../constants/colors';
 import AppButton from '../components/UI/Button';
-// import { Colors } from '../../constants/colors';
+import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
 
-const ProductDetailScreen = () => {
+type ProductDetailScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductDetail'>;
+
+type ProductDetailScreenRouteProp = RouteProp<ProductsStackParamList, 'ProductDetail'>;
+
+interface ProductDetailScreenProps {
+	route: ProductDetailScreenRouteProp;
+	navigation: ProductDetailScreenNavigationProp;
+}
+
+const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, route }) => {
 	const theme = useTheme();
+	const product = route.params.product;
 	return (
 		<View style={{ flex: 1 }}>
-			<Image
-				style={styles.image}
-				source={{ uri: 'https://cdn.pixabay.com/photo/2014/12/03/06/31/showroom-555113__340.jpg' }}
-			/>
+			<Image style={styles.image} source={{ uri: `https://eshopadminapp.herokuapp.com${product.image}` }} />
 			<View style={styles.container}>
 				<View style={styles.subContainer}>
-					<Subheading style={styles.subHeading}>Polo Materials</Subheading>
-					<Title style={styles.title}>$ 200</Title>
+					<Subheading style={styles.subHeading}>{product.title}</Subheading>
+					<Title style={styles.title}>$ {product.price}</Title>
 				</View>
 				<Divider style={{ height: 0.2, backgroundColor: theme.colors.placeholder }} />
 				<View style={{ flex: 1 }}>
 					<ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{}}>
 						<View style={styles.subContainer}>
 							<Title>Details</Title>
-							<Paragraph>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea dolore rem nulla est beatae.
-								Esse, animi deserunt! Quos, et veritatis.
-							</Paragraph>
+							<Paragraph>{product.description}</Paragraph>
 						</View>
 						<View style={styles.subContainer}>
 							<Title>Category</Title>

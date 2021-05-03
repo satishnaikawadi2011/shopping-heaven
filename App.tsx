@@ -11,6 +11,9 @@ import SignupScreen from './src/screens/SignupScreen';
 import ProductDetailScreen from './src/screens/ProductDetailScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import { theme } from './src/theme/theme';
+import ProductListScreen from './src/screens/ProductListScreen';
+import { ProductsNavigator } from './src/navigation/ProductStackNavigator';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -27,8 +30,9 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			{/* <LoginScreen /> */}
-			<SignupScreen />
+			<NavigationContainer>
+				<ProductsNavigator />
+			</NavigationContainer>
 		</PaperProvider>
 	);
 }
