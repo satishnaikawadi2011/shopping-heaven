@@ -8,7 +8,7 @@ type OrderStore = {
 	setOrders: (orders: Order[]) => void;
 };
 
-export const useProductStore = create<OrderStore>((set, get) => ({
+export const useOrderStore = create<OrderStore>((set, get) => ({
 	orders: [],
 	loading: false,
 	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
