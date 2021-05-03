@@ -1,32 +1,40 @@
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator,Text } from 'react-native-paper';
 import { Colors } from '../../constants/colors';
 import Screen from '../components/Screen';
+import CategoryList from '../components/UI/CategoryList';
 import ProductCard from '../components/UI/ProductCard';
 import { useProductStore } from '../store/product';
+import { centered } from '../utils/commonStyles';
 
 const ProductListScreen = () => {
-	const { products, loading, fetchAndSetProducts, setLoading } = useProductStore();
+	const { products, loading, fetchAndSetProductsAndCategories, categories,selectedCategory } = useProductStore();
 	useEffect(() => {
-		fetchAndSetProducts();
+		fetchAndSetProductsAndCategories();
 	}, []);
+	const filteredProducts = selectedCategory ? products.filter(product => product.categoryId === selectedCategory?._id) : products;
 	if (loading) {
 		return (
-			<View style={styles.centered}>
+			<View style={centered}>
 				<ActivityIndicator size="large" color={Colors.primary} />
 			</View>
 		);
 	}
 	return (
 		<Screen>
+			<CategoryList categories={categories} />
+			{filteredProducts.length === 0?<View style={[centered]}>
+				<Text>No products found !!</Text>
+			</View> :
 			<FlatList
 				keyExtractor={(item) => item._id}
-				data={products}
+				data={filteredProducts}
 				renderItem={({ item }) => {
 					return <ProductCard product={item} />;
 				}}
-			/>
+			
+			/>}
 		</Screen>
 	);
 };
@@ -34,10 +42,4 @@ const ProductListScreen = () => {
 export default ProductListScreen;
 
 const styles = StyleSheet.create({
-	centered:
-		{
-			flex: 1,
-			justifyContent: 'center',
-			alignItems: 'center'
-		}
 });

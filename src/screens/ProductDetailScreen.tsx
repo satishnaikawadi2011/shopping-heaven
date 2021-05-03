@@ -6,6 +6,7 @@ import { Divider, Paragraph, Subheading, Title, useTheme } from 'react-native-pa
 import { Colors } from '../../constants/colors';
 import AppButton from '../components/UI/Button';
 import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
+import { useProductStore } from '../store/product';
 
 type ProductDetailScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductDetail'>;
 
@@ -19,6 +20,8 @@ interface ProductDetailScreenProps {
 const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, route }) => {
 	const theme = useTheme();
 	const product = route.params.product;
+	const {categories} = useProductStore()
+	const category = categories.find(category => category._id === product.categoryId)
 	return (
 		<View style={{ flex: 1 }}>
 			<Image style={styles.image} source={{ uri: `https://eshopadminapp.herokuapp.com${product.image}` }} />
@@ -36,7 +39,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 						</View>
 						<View style={styles.subContainer}>
 							<Title>Category</Title>
-							<Subheading>Clothing</Subheading>
+							<Subheading>{category?.name}</Subheading>
 						</View>
 						<View style={styles.buttonsContainer}>
 							<AppButton bgColor={Colors.accent} title={'add to cart'} />
