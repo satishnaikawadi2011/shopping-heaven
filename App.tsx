@@ -14,6 +14,8 @@ import { theme } from './src/theme/theme';
 import ProductListScreen from './src/screens/ProductListScreen';
 import { ProductsNavigator } from './src/navigation/ProductStackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
+import CartItemTile from './src/components/UI/CartItemTile';
+import { centered } from './src/utils/commonStyles';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -30,6 +32,9 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
+			{/* <View style={centered}>
+				<CartItemTile />
+			</View> */}
 			<NavigationContainer>
 				<ProductsNavigator />
 			</NavigationContainer>
