@@ -5,6 +5,7 @@ import { Colors } from '../../../constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import { Product } from '../../models/Product';
 import { useProductStore } from '../../store/product';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 interface ProductCardProps {
 	product: Product;
 }
@@ -17,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const width = Dimensions.get('window').width;
 	return (
 		<TouchableWithoutFeedback onPress={() => navigation.navigate('ProductDetail', { product: product })}>
-			<Card style={{ ...styles.card, width: width * 0.9, alignSelf: 'center', marginVertical: 20 }}>
+			<Card style={{ ...styles.card, width: width * 0.9, alignSelf: 'center', marginVertical: 20,...CardStyleInterpolators }}>
 				<Card.Cover source={{ uri: `https://eshopadminapp.herokuapp.com${image}` }} />
 				<Card.Content style={styles.content}>
 					<View>

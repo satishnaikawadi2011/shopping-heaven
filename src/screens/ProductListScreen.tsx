@@ -22,7 +22,7 @@ const ProductListScreen = () => {
 		);
 	}
 	return (
-		<Screen>
+		<View style={{flex:1}}>
 			<CategoryList categories={categories} />
 			{filteredProducts.length === 0?<View style={[centered]}>
 				<Text>No products found !!</Text>
@@ -30,12 +30,12 @@ const ProductListScreen = () => {
 			<FlatList
 				keyExtractor={(item) => item._id}
 				data={filteredProducts}
-				renderItem={({ item }) => {
+					renderItem={({ item }) => {
 					return <ProductCard product={item} />;
 				}}
 			
 			/>}
-		</Screen>
+		</View>
 	);
 };
 

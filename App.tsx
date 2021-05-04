@@ -37,10 +37,10 @@ export default function App() {
 			{/* <View style={centered}>
 				<CartDetails />
 			</View> */}
-			<CartScreen />
-			{/* <NavigationContainer>
+			{/* <CartScreen /> */}
+			<NavigationContainer>
 				<ProductsNavigator />
-			</NavigationContainer> */}
+			</NavigationContainer>
 		</PaperProvider>
 	);
 }
