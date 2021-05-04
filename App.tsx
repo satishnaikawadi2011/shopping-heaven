@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Provider as PaperProvider, Subheading, Text, Title } from 'react-native-paper';
 import { Colors } from './constants/colors';
@@ -18,9 +18,19 @@ import CartItemTile from './src/components/UI/CartItemTile';
 import { centered } from './src/utils/commonStyles';
 import CartDetails from './src/components/UI/CartDetails';
 import CartScreen from './src/screens/CartScreen';
+import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
+	const { setCartItems } = useCartStore();
+	let cartData: any;
+	useEffect(() => {
+		const getCartData = async () => {
+			cartData = await getCartDataFromAsyncStorage();
+			setCartItems(cartData.cartItems);
+		};
+		getCartData();
+	}, []);
 	const [
 		loaded
 	] = useFonts({

@@ -92,11 +92,13 @@ export const useCartStore = create<CartStore>((set, get) => ({
 }));
 
 const saveCartDataToAsyncStorage = (items: CartItem[]) => {
-	AsyncStorage.setItem('cartData', JSON.stringify(items));
+	AsyncStorage.setItem('cartData', JSON.stringify({ cartItems: items }));
+	// console.log('in cart store', JSON.stringify({ cartItems: items }));
 };
 
-const getCartDataFromAsyncStorage = async () => {
-	const cartItems = await AsyncStorage.getItem('cartData');
+export const getCartDataFromAsyncStorage = async () => {
+	const cartItems: any = await AsyncStorage.getItem('cartData');
+	// console.log('getting from storage', JSON.parse(cartItems));
 	if (cartItems) {
 		return JSON.parse(cartItems);
 	}

@@ -8,6 +8,7 @@ import CartButton from '../components/headerButtons/CartButton';
 import AppButton from '../components/UI/Button';
 import DoubleBlockButton from '../components/UI/DoubleBlockButton';
 import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
+import { useCartStore } from '../store/cart';
 import { useProductStore } from '../store/product';
 
 type ProductDetailScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductDetail'>;
@@ -22,8 +23,12 @@ interface ProductDetailScreenProps {
 const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, route }) => {
 	const theme = useTheme();
 	const product = route.params.product;
+	const { addToCart} = useCartStore()
 	const {categories} = useProductStore()
 	const category = categories.find(category => category._id === product.categoryId)
+	const handleAddToCart = () => {
+		addToCart({id:product._id,image:product.image,price:product.price,title:product.title})
+	}
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={{ flex: 1 }}>
@@ -49,7 +54,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 				</ScrollView>
 			</View>
 	<DoubleBlockButton
-				leftButtonProps={{ label: 'add to cart', icon: 'cart-plus' }}
+				leftButtonProps={{ label: 'add to cart', icon: 'cart-plus',onPress:handleAddToCart }}
 				rightButtonProps={{ label: 'buy now', onPress: () => {} }}
 			/>
 		</View>
