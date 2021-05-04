@@ -15,7 +15,7 @@ type CartStore = {
 	totalItems: () => number;
 };
 
-export const useOrderStore = create<CartStore>((set, get) => ({
+export const useCartStore = create<CartStore>((set, get) => ({
 	cartItems: [],
 	loading: false,
 	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),

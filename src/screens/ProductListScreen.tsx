@@ -1,12 +1,22 @@
+import { RouteProp } from '@react-navigation/core';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, View } from 'react-native';
 import { ActivityIndicator,Text } from 'react-native-paper';
+import { HeaderButtons,Item } from 'react-navigation-header-buttons';
 import { Colors } from '../../constants/colors';
+import CustomHeaderButton from '../components/navigation/CustomHeaderButton';
 import Screen from '../components/Screen';
 import CategoryList from '../components/UI/CategoryList';
+import CustomBadge from '../components/UI/CustomBadge';
 import ProductCard from '../components/UI/ProductCard';
+import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
 import { useProductStore } from '../store/product';
 import { centered } from '../utils/commonStyles';
+
+type ProductListScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductList'>;
+
+type ProductListScreenRouteProp = RouteProp<ProductsStackParamList, 'ProductList'>;
 
 const ProductListScreen = () => {
 	const { products, loading, fetchAndSetProductsAndCategories, categories,selectedCategory } = useProductStore();
@@ -43,3 +53,47 @@ export default ProductListScreen;
 
 const styles = StyleSheet.create({
 });
+
+
+export const screenOptions:StackNavigationOptions | ((props: {
+    route: RouteProp<ProductsStackParamList, "ProductList">;
+	navigation: any;
+}) => StackNavigationOptions) | undefined = (navData) => {
+	return {
+		title: 'Shopping Heaven',
+		headerRight : () => (
+			<View style={{marginRight:10}}>
+				<CustomBadge style={{ position: 'absolute', top: -10 }} />
+				<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+					<Item
+						title="Cart"
+						iconName={
+
+								Platform.OS === 'android' ? 'md-cart' :
+								'ios-cart'
+						}
+						onPress={() => {
+							// navData.navigation.navigate('Notification');
+						}}
+					/>
+				</HeaderButtons>
+			</View>
+		),
+
+		// headerLeft  : () => (
+		// 	<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+		// 		<Item
+		// 			title="Menu"
+		// 			iconName={
+
+		// 					Platform.OS === 'android' ? 'md-menu' :
+		// 					'ios-menu'
+		// 			}
+		// 			onPress={() => {
+		// 				navData.navigation.toggleDrawer();
+		// 			}}
+		// 		/>
+		// 	</HeaderButtons>
+		// )
+	};
+};
