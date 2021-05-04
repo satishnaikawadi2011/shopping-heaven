@@ -58,7 +58,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
 	removeFromCart:
 		(productId: string) => {
 			const cartItems = get().cartItems;
-			const updatedCartItems = cartItems.filter((itm) => itm._id === productId);
+			const updatedCartItems = cartItems.filter((itm) => itm._id !== productId);
 			get().setCartItems([
 				...updatedCartItems
 			]);

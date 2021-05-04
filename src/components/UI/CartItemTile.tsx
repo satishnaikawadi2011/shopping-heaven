@@ -1,15 +1,24 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { Button, Colors, IconButton, Subheading, Surface, Text, Title } from 'react-native-paper';
+import { Subheading, Surface, Text, Title } from 'react-native-paper';
 import { DEVICE_WIDTH } from '../../../constants';
 import { CartItem } from '../../models/CartItem';
+import { useCartStore } from '../../store/cart';
+import DoubleBlockButton from './DoubleBlockButton';
 
 interface CartTItemileProps {
 	cartItem: CartItem;
 }
 
 const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem }) => {
-	const { image, price, quantity, title } = cartItem;
+	const { addToCart, removeFromCart } = useCartStore();
+	const { _id, image, price, quantity, title } = cartItem;
+	const handleAddMore = () => {
+		addToCart({ id: _id, image, price, title });
+	};
+	const handleRemove = () => {
+		removeFromCart(_id);
+	};
 	return (
 		<Surface style={styles.surface}>
 			<View style={{ flexDirection: 'row' }}>
@@ -29,13 +38,11 @@ const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem }) => {
 					</Subheading>
 				</View>
 			</View>
-			<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 15 }}>
-				<Button icon="plus" mode="contained" onPress={() => {}}>
-					Add More
-				</Button>
-				<Button icon="delete" mode="contained" color={Colors.red500} onPress={() => {}}>
-					Remove
-				</Button>
+			<View style={{ marginTop: 15 }}>
+				<DoubleBlockButton
+					leftButtonProps={{ label: 'add more', icon: 'plus', onPress: handleAddMore }}
+					rightButtonProps={{ label: 'remove', onPress: handleRemove, icon: 'delete-outline' }}
+				/>
 			</View>
 		</Surface>
 	);
@@ -59,7 +66,8 @@ const styles = StyleSheet.create({
 			shadowRadius: 2.22,
 
 			elevation: 3,
-			borderRadius: 10
+			// borderRadius: 10,
+			marginVertical: 10
 		},
 	image:
 		{
