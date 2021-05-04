@@ -5,6 +5,7 @@ import { defaltNavOptions } from './options/defaultNavigationOptions';
 import React from 'react';
 import { Product } from '../models/Product';
 import { screenOptions as ProductListScreenOptions } from '../screens/ProductListScreen';
+import { screenOptions as ProductDetailScreenOptions } from '../screens/ProductDetailScreen';
 
 export type ProductsStackParamList = {
 	ProductList: undefined;
@@ -25,10 +26,7 @@ export const ProductsNavigator = () => {
 			<ProductsStackNavigator.Screen
 				name="ProductDetail"
 				component={ProductDetailScreen}
-				options={({ route }) => ({
-					title: route.params.product.title
-				})}
-				// options={DetailScreenOptions}
+				options={ProductDetailScreenOptions}
 			/>
 		</ProductsStackNavigator.Navigator>
 	);

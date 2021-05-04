@@ -5,6 +5,7 @@ import { FlatList, Platform, StyleSheet, View } from 'react-native';
 import { ActivityIndicator,Text } from 'react-native-paper';
 import { HeaderButtons,Item } from 'react-navigation-header-buttons';
 import { Colors } from '../../constants/colors';
+import CartButton from '../components/headerButtons/CartButton';
 import CustomHeaderButton from '../components/navigation/CustomHeaderButton';
 import Screen from '../components/Screen';
 import CategoryList from '../components/UI/CategoryList';
@@ -62,22 +63,7 @@ export const screenOptions:StackNavigationOptions | ((props: {
 	return {
 		title: 'Shopping Heaven',
 		headerRight : () => (
-			<View style={{marginRight:10}}>
-				<CustomBadge style={{ position: 'absolute', top: -10 }} />
-				<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-					<Item
-						title="Cart"
-						iconName={
-
-								Platform.OS === 'android' ? 'md-cart' :
-								'ios-cart'
-						}
-						onPress={() => {
-							// navData.navigation.navigate('Notification');
-						}}
-					/>
-				</HeaderButtons>
-			</View>
+			<CartButton/>
 		),
 
 		// headerLeft  : () => (
