@@ -39,7 +39,7 @@ const SignupScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 	};
 	return (
 		<View style={{ flex: 1, justifyContent: 'space-evenly' }}>
-			<Image style={styles.logo} source={require('../../assets/logo.png')} />
+			<Image style={styles.logo} source={require('../../../assets/logo.png')} />
 			<View style={styles.container}>
 				<Formik validationSchema={authSchema} initialValues={initialValues} onSubmit={submitHandler}>
 					{(props) => (

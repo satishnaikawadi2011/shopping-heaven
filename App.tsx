@@ -54,13 +54,12 @@ export default function App() {
 			{/* <View style={centered}>
 				<AppIcon name="email" bgColor={Colors.primary} />
 			</View> */}
-			<ProfileScreen />
-			{/* <NavigationContainer>
-				<ProductsNavigator />
+			{/* <ProfileScreen /> */}
+			<NavigationContainer>
 				{
 					user ? <ProductsNavigator /> :
 					<AuthNavigator />}
-			</NavigationContainer> */}
+			</NavigationContainer>
 		</PaperProvider>
 	);
 }

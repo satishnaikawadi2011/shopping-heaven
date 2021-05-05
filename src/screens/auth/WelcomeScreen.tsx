@@ -13,8 +13,8 @@ interface WelcomeScreenProps {
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
 	return (
-		<ImageBackground blurRadius={1} source={require('../../assets/background.jpg')} style={styles.background}>
-			<Image source={require('../../assets/logo.png')} style={styles.logo} />
+		<ImageBackground blurRadius={1} source={require('../../../assets/background.jpg')} style={styles.background}>
+			<Image source={require('../../../assets/logo.png')} style={styles.logo} />
 			<View style={styles.buttonsContainer}>
 				<AppButton
 					title="login"
