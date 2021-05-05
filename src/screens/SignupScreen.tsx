@@ -6,8 +6,16 @@ import { Colors } from '../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppButton from '../components/UI/Button';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthStackParamList } from '../navigation/AuthNavigator';
 
-const SignupScreen = () => {
+type RegisterScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Register'>;
+
+interface RegisterScreenProps {
+	navigation: RegisterScreenNavigationProp;
+}
+
+const SignupScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 	const initialValues = {
 		email: '',
 		password: '',
@@ -135,6 +143,7 @@ const SignupScreen = () => {
 							)}
 							<AppButton
 								title="sign up"
+								// loading={loading}
 								onPress={// !loading ? props.handleSubmit :
 								() => {}}
 							/>
@@ -142,8 +151,7 @@ const SignupScreen = () => {
 								bgColor={Colors.accent}
 								title="login here"
 								onPress={() => {
-									// !loading ? navigation.navigate('Signup') :
-									// null;
+									navigation.navigate('Login');
 								}}
 							/>
 						</View>

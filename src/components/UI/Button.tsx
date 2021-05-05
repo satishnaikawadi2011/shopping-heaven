@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
+import { GestureResponderEvent, StyleSheet, Pressable } from 'react-native';
 import { Colors } from '../../../constants/colors';
 import { ActivityIndicator, Text } from 'react-native-paper';
 
@@ -19,11 +19,11 @@ const AppButton: React.FC<ButtonProps> = ({
 	onPress = () => {}
 }) => {
 	return (
-		<TouchableOpacity onPress={onPress} style={{ ...styles.button, backgroundColor: bgColor }}>
+		<Pressable onPress={onPress} style={{ ...styles.button, backgroundColor: bgColor }}>
 			{
 				loading ? <ActivityIndicator size="small" color={Colors.white} /> :
 				<Text style={{ ...styles.text, color: titleColor }}>{title}</Text>}
-		</TouchableOpacity>
+		</Pressable>
 	);
 };
 

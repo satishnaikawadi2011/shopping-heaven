@@ -2,34 +2,35 @@ import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, Provider as PaperProvider, Subheading, Text, Title } from 'react-native-paper';
-import { Colors } from './constants/colors';
-import AppButton from './src/components/UI/Button';
-import ProductCard from './src/components/UI/ProductCard';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
-import ProductDetailScreen from './src/screens/ProductDetailScreen';
-import WelcomeScreen from './src/screens/WelcomeScreen';
+import { Card, Provider as PaperProvider } from 'react-native-paper';
 import { theme } from './src/theme/theme';
-import ProductListScreen from './src/screens/ProductListScreen';
 import { ProductsNavigator } from './src/navigation/ProductStackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import CartItemTile from './src/components/UI/CartItemTile';
-import { centered } from './src/utils/commonStyles';
-import CartDetails from './src/components/UI/CartDetails';
-import CartScreen from './src/screens/CartScreen';
 import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
+import AuthNavigator from './src/navigation/AuthNavigator';
+import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
 	const { setCartItems } = useCartStore();
+	const { user, setExpiryDate, setUser, setToken } = useAuthStore();
 	let cartData: any;
+	let userData: any;
 	useEffect(() => {
 		const getCartData = async () => {
 			cartData = await getCartDataFromAsyncStorage();
 			setCartItems(cartData.cartItems);
 		};
+		const getUserData = async () => {
+			userData = await getUserDataFromAsyncStorage();
+			if (userData) {
+				setExpiryDate(userData.tokenData.expiryDate);
+				setUser(userData.user);
+				setToken(userData.tokenData.token);
+			}
+		};
 		getCartData();
+		getUserData();
 	}, []);
 	const [
 		loaded
@@ -49,7 +50,10 @@ export default function App() {
 			</View> */}
 			{/* <CartScreen /> */}
 			<NavigationContainer>
-				<ProductsNavigator />
+				{/* <ProductsNavigator /> */}
+				{
+					user ? <ProductsNavigator /> :
+					<AuthNavigator />}
 			</NavigationContainer>
 		</PaperProvider>
 	);

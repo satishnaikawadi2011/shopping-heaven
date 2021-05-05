@@ -1,15 +1,34 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { Colors } from '../../constants/colors';
 import AppButton from '../components/UI/Button';
+import { AuthStackParamList } from '../navigation/AuthNavigator';
 
-const WelcomeScreen = () => {
+type WelcomeScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Welcome'>;
+
+interface WelcomeScreenProps {
+	navigation: WelcomeScreenNavigationProp;
+}
+
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
 	return (
 		<ImageBackground blurRadius={1} source={require('../../assets/background.jpg')} style={styles.background}>
 			<Image source={require('../../assets/logo.png')} style={styles.logo} />
 			<View style={styles.buttonsContainer}>
-				<AppButton title="login" />
-				<AppButton title="register" bgColor={Colors.accent} />
+				<AppButton
+					title="login"
+					onPress={() => {
+						navigation.navigate('Login');
+					}}
+				/>
+				<AppButton
+					title="register"
+					bgColor={Colors.accent}
+					onPress={() => {
+						navigation.navigate('Register');
+					}}
+				/>
 			</View>
 		</ImageBackground>
 	);

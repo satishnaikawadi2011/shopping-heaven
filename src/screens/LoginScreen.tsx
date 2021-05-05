@@ -1,14 +1,23 @@
 import React from 'react';
 import { Image, StyleSheet, View, Alert } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
-import Screen from '../components/Screen';
 import { Colors } from '../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppButton from '../components/UI/Button';
 import { useAuthStore } from '../store/auth';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthStackParamList } from '../navigation/AuthNavigator';
+import useIsMounted from 'react-is-mounted-hook';
 
-const LoginScreen = () => {
+type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
+
+interface LoginScreenProps {
+	navigation: LoginScreenNavigationProp;
+}
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+	const isMounted = useIsMounted();
 	const { loading, login, error, setError } = useAuthStore();
 	const initialValues = {
 		username: '',
@@ -20,7 +29,9 @@ const LoginScreen = () => {
 	});
 	const submitHandler = async (values: any, actions: any) => {
 		await login(values.username, values.password);
-		actions.resetForm();
+		if (isMounted()) {
+			actions.resetForm();
+		}
 	};
 	if (error) {
 		Alert.alert('Error', error, [
@@ -112,8 +123,7 @@ const LoginScreen = () => {
 								bgColor={Colors.accent}
 								title="register here"
 								onPress={() => {
-									// !loading ? navigation.navigate('Signup') :
-									// null;
+									navigation.navigate('Register');
 								}}
 							/>
 						</View>
