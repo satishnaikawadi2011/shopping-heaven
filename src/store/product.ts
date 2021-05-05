@@ -4,8 +4,6 @@ import { Product } from '../models/Product';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 
-const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZGY1ZmNmZTBjYTdjNTUyY2QxMzUyOSIsImlhdCI6MTYxOTk3NjI4NCwiZXhwIjoxNjIwNTgxMDg0fQ.KcXtOozrDZQqr6WsSMaRQcIoUVpUfpNk1G0QMPKNlTs`;
-
 type ProductStore = {
 	products: Product[];
 	categories: Category[];
@@ -31,7 +29,6 @@ export const useProductStore = create<ProductStore>((set, get) => ({
 		async () => {
 			try {
 				get().setLoading(true);
-				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 				const productResponse = await axios.get(`${BACKEND_URL}/product`);
 				const categoryResponse = await axios.get(`${BACKEND_URL}/category`);
 				get().setLoading(false);

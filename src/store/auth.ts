@@ -3,7 +3,6 @@ import create from 'zustand';
 import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import JwtDecode from 'jwt-decode';
 import jwtDecode from 'jwt-decode';
 
 let timer: any;
@@ -73,6 +72,7 @@ const clearLogoutTimer = () => {
 };
 
 const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
+	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	AsyncStorage.setItem('user', JSON.stringify(user));
 	AsyncStorage.setItem(
 		'tokenData',
@@ -88,6 +88,8 @@ export const getUserDataFromAsyncStorage = async () => {
 		const tokenData: any = await AsyncStorage.getItem('tokenData');
 		const user: any = await AsyncStorage.getItem('user');
 		if (user && tokenData) {
+			axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(tokenData).token}`;
+
 			return {
 				tokenData: JSON.parse(tokenData),
 				user: JSON.parse(user)
