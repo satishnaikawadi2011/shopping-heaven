@@ -9,6 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
+import { centered } from './src/utils/commonStyles';
+import AppIcon from './src/components/UI/AppIcon';
+import { Colors } from './constants/colors';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -45,16 +48,17 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			{/* <View style={centered}>
-				<CartDetails />
-			</View> */}
+			<View style={centered}>
+				<AppIcon name="email" bgColor={Colors.primary} />
+				{/* <CartDetails /> */}
+			</View>
 			{/* <CartScreen /> */}
-			<NavigationContainer>
-				{/* <ProductsNavigator /> */}
+			{/* <NavigationContainer>
+				<ProductsNavigator />
 				{
 					user ? <ProductsNavigator /> :
 					<AuthNavigator />}
-			</NavigationContainer>
+			</NavigationContainer> */}
 		</PaperProvider>
 	);
 }
