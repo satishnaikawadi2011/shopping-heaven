@@ -4,16 +4,18 @@ import { Text, useTheme } from 'react-native-paper';
 
 interface ListItemProps {
 	title: string;
-	subTitle: string;
-	image: ImageSourcePropType;
+	subTitle?: string;
+	image?: ImageSourcePropType;
+	ImageComponent?: any;
 }
 
-const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle }) => {
+const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle, ImageComponent }) => {
 	const theme = useTheme();
 	return (
 		<View style={styles.container}>
-			<Image source={image} style={styles.image} />
-			<View>
+			{ImageComponent}
+			{image && <Image source={image} style={styles.image} />}
+			<View style={styles.details}>
 				<Text
 					style={[
 						styles.title
@@ -21,14 +23,16 @@ const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle }) => {
 				>
 					{title}
 				</Text>
-				<Text
-					style={[
-						styles.subTitle,
-						{ color: theme.colors.placeholder }
-					]}
-				>
-					{subTitle}
-				</Text>
+				{subTitle && (
+					<Text
+						style={[
+							styles.subTitle,
+							{ color: theme.colors.placeholder }
+						]}
+					>
+						{subTitle}
+					</Text>
+				)}
 			</View>
 		</View>
 	);
@@ -45,8 +49,11 @@ const styles = StyleSheet.create({
 		{
 			width: 70,
 			height: 70,
-			borderRadius: 35,
-			marginRight: 10
+			borderRadius: 35
+		},
+	details:
+		{
+			marginLeft: 10
 		},
 	title:
 		{
