@@ -4,15 +4,11 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Provider as PaperProvider } from 'react-native-paper';
 import { theme } from './src/theme/theme';
-import { ProductsNavigator } from './src/navigation/ProductStackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
-import { centered } from './src/utils/commonStyles';
-import AppIcon from './src/components/UI/AppIcon';
-import { Colors } from './constants/colors';
-import ProfileScreen from './src/screens/ProfileScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -56,8 +52,9 @@ export default function App() {
 			</View> */}
 			{/* <ProfileScreen /> */}
 			<NavigationContainer>
+				{/* <ProductsNavigator /> */}
 				{
-					user ? <ProductsNavigator /> :
+					user ? <AppNavigator /> :
 					<AuthNavigator />}
 			</NavigationContainer>
 		</PaperProvider>

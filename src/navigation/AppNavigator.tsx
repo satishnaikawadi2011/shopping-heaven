@@ -7,6 +7,7 @@ import { Product } from '../models/Product';
 import { screenOptions as ProductListScreenOptions } from '../screens/ProductListScreen';
 import { screenOptions as ProductDetailScreenOptions } from '../screens/ProductDetailScreen';
 import CartScreen from '../screens/CartScreen';
+import HomeTabNavigator from './HomeTabs';
 
 export type ProductsStackParamList = {
 	ProductList: undefined;
@@ -16,13 +17,12 @@ export type ProductsStackParamList = {
 
 const ProductsStackNavigator = createStackNavigator<ProductsStackParamList>();
 
-export const ProductsNavigator = () => {
+const AppNavigator = () => {
 	return (
 		<ProductsStackNavigator.Navigator screenOptions={defaltNavOptions}>
-			{/* <ProductsStackNavigator.Screen name="ScreamsOverview" component={TabNavigator} options={screenOptions} /> */}
 			<ProductsStackNavigator.Screen
 				name="ProductList"
-				component={ProductListScreen}
+				component={HomeTabNavigator}
 				options={ProductListScreenOptions}
 			/>
 			<ProductsStackNavigator.Screen
@@ -34,3 +34,5 @@ export const ProductsNavigator = () => {
 		</ProductsStackNavigator.Navigator>
 	);
 };
+
+export default AppNavigator;

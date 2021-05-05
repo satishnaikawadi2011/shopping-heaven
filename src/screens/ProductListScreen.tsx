@@ -1,17 +1,13 @@
-import { RouteProp } from '@react-navigation/core';
+import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { FlatList, Platform, StyleSheet, View } from 'react-native';
+import { FlatList,  StyleSheet, View } from 'react-native';
 import { ActivityIndicator,Text } from 'react-native-paper';
-import { HeaderButtons,Item } from 'react-navigation-header-buttons';
 import { Colors } from '../../constants/colors';
 import CartButton from '../components/headerButtons/CartButton';
-import CustomHeaderButton from '../components/navigation/CustomHeaderButton';
-import Screen from '../components/Screen';
 import CategoryList from '../components/UI/CategoryList';
-import CustomBadge from '../components/UI/CustomBadge';
 import ProductCard from '../components/UI/ProductCard';
-import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
+import { ProductsStackParamList } from '../navigation/AppNavigator';
 import { useProductStore } from '../store/product';
 import { centered } from '../utils/commonStyles';
 
@@ -19,7 +15,12 @@ type ProductListScreenNavigationProp = StackNavigationProp<ProductsStackParamLis
 
 type ProductListScreenRouteProp = RouteProp<ProductsStackParamList, 'ProductList'>;
 
-const ProductListScreen = () => {
+interface ProductLisScreenProps{
+	navigation: ProductListScreenNavigationProp;
+	route:ProductListScreenRouteProp
+}
+
+const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) => {
 	const { products, loading, fetchAndSetProductsAndCategories, categories,selectedCategory } = useProductStore();
 	useEffect(() => {
 		fetchAndSetProductsAndCategories();
@@ -59,27 +60,28 @@ const styles = StyleSheet.create({
 export const screenOptions:StackNavigationOptions | ((props: {
     route: RouteProp<ProductsStackParamList, "ProductList">;
 	navigation: any;
-}) => StackNavigationOptions) | undefined = (navData) => {
-	return {
+}) => StackNavigationOptions) | undefined = ({ route }) => {
+	const routeName = getFocusedRouteNameFromRoute(route);
+	if (routeName === 'Home') {
+		return {
 		title: 'Shopping Heaven',
 		headerRight : () => (
 			<CartButton/>
 		),
-
-		// headerLeft  : () => (
-		// 	<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-		// 		<Item
-		// 			title="Menu"
-		// 			iconName={
-
-		// 					Platform.OS === 'android' ? 'md-menu' :
-		// 					'ios-menu'
-		// 			}
-		// 			onPress={() => {
-		// 				navData.navigation.toggleDrawer();
-		// 			}}
-		// 		/>
-		// 	</HeaderButtons>
-		// )
-	};
+	};	
+	} else if (routeName === 'Profile') {
+		return {
+			title:'Your Profile'
+		}
+	} else if(routeName === 'AddAddress'){
+		return {
+			title:'Add Address'
+		}
+	}
+	return {
+		title: 'Shopping Heaven',
+		headerRight: () => (
+			<CartButton />
+		),
+	}
 };

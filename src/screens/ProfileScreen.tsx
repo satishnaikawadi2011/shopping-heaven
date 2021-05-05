@@ -9,14 +9,6 @@ import { useThemeStore } from '../store/theme';
 
 const navMenuItems = [
 	{
-		title: 'My Cart',
-		icon:
-			{
-				name: 'cart',
-				backgroundColor: Colors.primary
-			}
-	},
-	{
 		title: 'My Orders',
 		icon:
 			{

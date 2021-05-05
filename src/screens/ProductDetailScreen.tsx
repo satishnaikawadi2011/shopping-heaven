@@ -7,7 +7,7 @@ import { Colors } from '../../constants/colors';
 import CartButton from '../components/headerButtons/CartButton';
 import AppButton from '../components/UI/Button';
 import DoubleBlockButton from '../components/UI/DoubleBlockButton';
-import { ProductsStackParamList } from '../navigation/ProductStackNavigator';
+import { ProductsStackParamList } from '../navigation/AppNavigator';
 import { useCartStore } from '../store/cart';
 import { useProductStore } from '../store/product';
 
