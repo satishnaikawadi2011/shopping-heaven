@@ -1,13 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
-import Screen from '../components/Screen';
-import { Colors } from '../../constants/colors';
+import Screen from '../../components/Screen';
+import { Colors } from '../../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import AppButton from '../components/UI/Button';
+import AppButton from '../../components/UI/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AuthStackParamList } from '../navigation/AuthNavigator';
+import { AuthStackParamList } from '../../navigation/AuthNavigator';
 
 type RegisterScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Register'>;
 

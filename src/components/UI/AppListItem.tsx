@@ -12,7 +12,12 @@ interface ListItemProps {
 const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle, ImageComponent }) => {
 	const theme = useTheme();
 	return (
-		<View style={styles.container}>
+		<View
+			style={[
+				styles.container,
+				{ backgroundColor: theme.colors.surface }
+			]}
+		>
 			{ImageComponent}
 			{image && <Image source={image} style={styles.image} />}
 			<View style={styles.details}>
@@ -43,7 +48,9 @@ export default AppListItem;
 const styles = StyleSheet.create({
 	container:
 		{
-			flexDirection: 'row'
+			flexDirection: 'row',
+			marginHorizontal: 10,
+			padding: 8
 		},
 	image:
 		{
@@ -53,11 +60,17 @@ const styles = StyleSheet.create({
 		},
 	details:
 		{
-			marginLeft: 10
+			marginLeft: 10,
+			justifyContent: 'center'
 		},
 	title:
 		{
-			fontWeight: '500'
+			fontWeight: 'bold',
+			fontFamily: 'UbuntuBold',
+			fontSize: 17
 		},
-	subTitle: {}
+	subTitle:
+		{
+			fontSize: 15
+		}
 });

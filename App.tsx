@@ -12,6 +12,7 @@ import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
 import { centered } from './src/utils/commonStyles';
 import AppIcon from './src/components/UI/AppIcon';
 import { Colors } from './constants/colors';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -22,7 +23,9 @@ export default function App() {
 	useEffect(() => {
 		const getCartData = async () => {
 			cartData = await getCartDataFromAsyncStorage();
-			setCartItems(cartData.cartItems);
+			if (cartData) {
+				setCartItems(cartData.cartItems);
+			}
 		};
 		const getUserData = async () => {
 			userData = await getUserDataFromAsyncStorage();
@@ -48,11 +51,10 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			<View style={centered}>
+			{/* <View style={centered}>
 				<AppIcon name="email" bgColor={Colors.primary} />
-				{/* <CartDetails /> */}
-			</View>
-			{/* <CartScreen /> */}
+			</View> */}
+			<ProfileScreen />
 			{/* <NavigationContainer>
 				<ProductsNavigator />
 				{

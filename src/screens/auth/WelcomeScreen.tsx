@@ -1,9 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
-import { Colors } from '../../constants/colors';
-import AppButton from '../components/UI/Button';
-import { AuthStackParamList } from '../navigation/AuthNavigator';
+import { Colors } from '../../../constants/colors';
+import AppButton from '../../components/UI/Button';
+import { AuthStackParamList } from '../../navigation/AuthNavigator';
 
 type WelcomeScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Welcome'>;
 

@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from '../screens/WelcomeScreen';
+import WelcomeScreen from '../screens/auth/WelcomeScreen';
 import React from 'react';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
+import SignupScreen from '../screens/auth/SignupScreen';
 
 export type AuthStackParamList = {
 	Welcome: undefined;
