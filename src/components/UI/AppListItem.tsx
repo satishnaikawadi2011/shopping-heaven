@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, ImageSourcePropType } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Text, useTheme, Surface } from 'react-native-paper';
+import { useTheme as useNavTheme } from '@react-navigation/native';
 
 interface ListItemProps {
 	title: string;
@@ -11,11 +12,12 @@ interface ListItemProps {
 
 const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle, ImageComponent }) => {
 	const theme = useTheme();
+	const navTheme = useNavTheme();
 	return (
-		<View
+		<Surface
 			style={[
 				styles.container,
-				{ backgroundColor: theme.colors.surface }
+				{ backgroundColor: navTheme.colors.card }
 			]}
 		>
 			{ImageComponent}
@@ -39,7 +41,7 @@ const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle, ImageCom
 					</Text>
 				)}
 			</View>
-		</View>
+		</Surface>
 	);
 };
 

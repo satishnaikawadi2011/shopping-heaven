@@ -2,16 +2,23 @@ import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { Colors } from '../../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 
 interface Props {
 	onPress?: () => void;
 }
 
 const CustomAddAddressTabButton: React.FC<Props> = ({ onPress }) => {
+	const theme = useTheme();
 	return (
 		<TouchableWithoutFeedback onPress={onPress}>
-			<View style={styles.container}>
-				<MaterialCommunityIcons name="plus-circle" size={40} color={Colors.white} />
+			<View
+				style={[
+					styles.container,
+					{ borderColor: theme.colors.background }
+				]}
+			>
+				<MaterialCommunityIcons name="plus-circle" size={40} color={theme.colors.background} />
 			</View>
 		</TouchableWithoutFeedback>
 	);
@@ -27,7 +34,6 @@ const styles = StyleSheet.create({
 			width: 80,
 			borderRadius: 40,
 			bottom: 30,
-			borderColor: Colors.white,
 			borderWidth: 10,
 			alignItems: 'center',
 			justifyContent: 'center'
