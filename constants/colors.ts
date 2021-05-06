@@ -3,5 +3,7 @@ export const Colors = {
 	accent: '#b1cf5f',
 	dark: '#1c7c54',
 	black: '#000000',
-	white: '#ffffff'
+	white: '#ffffff',
+	medium: 'rgb(128, 128, 128)',
+	light: ' #f2f2f2'
 };

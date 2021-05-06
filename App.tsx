@@ -1,12 +1,14 @@
 import { useFonts } from 'expo-font';
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
 import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
 import AppNavigationContainer from './src/navigation/AppNavigationContainer';
 import { getThemeDataFromAsyncStorage, useThemeStore } from './src/store/theme';
 import { CustomDarkTheme, CustomDefaultTheme } from './src/theme/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
+import AppTextInput from './src/components/UI/AppTextInput';
+import { centered } from './src/utils/commonStyles';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -57,7 +59,10 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			<AppNavigationContainer />
+			{/* <AppNavigationContainer /> */}
+			<View style={centered}>
+				<AppTextInput icon="email" style={{}} placeholder="Username" />
+			</View>
 		</PaperProvider>
 	);
 }
