@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../../../constants/colors';
 
-interface InputProps {
+export interface InputProps {
 	style?: ViewStyle;
 	icon?: any;
 }
