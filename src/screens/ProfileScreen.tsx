@@ -1,9 +1,9 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Colors } from '../../constants/colors';
-import AppDivider from '../components/UI/AppDivider';
-import AppIcon from '../components/UI/AppIcon';
-import AppListItem from '../components/UI/AppListItem';
+import AppDivider from '../components/UI/app/AppDivider';
+import AppIcon from '../components/UI/app/AppIcon';
+import AppListItem from '../components/UI/app/AppListItem';
 import { Colors as MdColors, Switch, Text } from 'react-native-paper';
 import { useThemeStore } from '../store/theme';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInputProps, ViewStyle, StyleSheet, View, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { Colors } from '../../../constants/colors';
+import { Colors } from '../../../../constants/colors';
 
 interface InputProps {
 	style?: ViewStyle;

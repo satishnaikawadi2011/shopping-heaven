@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Surface, Title } from 'react-native-paper';
 import { DEVICE_WIDTH } from '../../../constants';
-import AppDivider from './AppDivider';
+import AppDivider from './app/AppDivider';
 
 interface CartDetailsProps {
 	totalItems: number;

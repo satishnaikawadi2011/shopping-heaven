@@ -5,7 +5,7 @@ import Screen from '../../components/Screen';
 import { Colors } from '../../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import AppButton from '../../components/UI/Button';
+import AppButton from '../../components/UI/app/Button';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
 

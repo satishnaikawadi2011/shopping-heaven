@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Subheading, Surface, Text, Title } from 'react-native-paper';
-import { DEVICE_WIDTH } from '../../../constants';
-import { CartItem } from '../../models/CartItem';
-import { useCartStore } from '../../store/cart';
+import { DEVICE_WIDTH } from '../../../../constants';
+import { CartItem } from '../../../models/CartItem';
+import { useCartStore } from '../../../store/cart';
 import DoubleBlockButton from './DoubleBlockButton';
 
 interface CartTItemileProps {

@@ -4,8 +4,8 @@ import { Button, Surface, Text, Title } from 'react-native-paper';
 import { DEVICE_WIDTH } from '../../constants';
 import { Colors } from '../../constants/colors';
 import CartDetails from '../components/UI/CartDetails';
-import CartItemTile from '../components/UI/CartItemTile';
-import DoubleBlockButton from '../components/UI/DoubleBlockButton';
+import CartItemTile from '../components/UI/app/CartItemTile';
+import DoubleBlockButton from '../components/UI/app/DoubleBlockButton';
 import { CartItem } from '../models/CartItem';
 import { useCartStore } from '../store/cart';
 

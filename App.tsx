@@ -7,7 +7,7 @@ import AppNavigationContainer from './src/navigation/AppNavigationContainer';
 import { getThemeDataFromAsyncStorage, useThemeStore } from './src/store/theme';
 import { CustomDarkTheme, CustomDefaultTheme } from './src/theme/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
-import AppTextInput from './src/components/UI/AppTextInput';
+import AppTextInput from './src/components/UI/app/AppTextInput';
 import { centered } from './src/utils/commonStyles';
 
 export default function App() {

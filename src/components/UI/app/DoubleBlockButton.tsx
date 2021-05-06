@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
-import { Colors } from '../../../constants/colors';
+import { Colors } from '../../../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface ButtonProps {

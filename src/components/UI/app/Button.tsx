@@ -1,6 +1,6 @@
 import React from 'react';
 import { GestureResponderEvent, StyleSheet, Pressable } from 'react-native';
-import { Colors } from '../../../constants/colors';
+import { Colors } from '../../../../constants/colors';
 import { ActivityIndicator, Text } from 'react-native-paper';
 
 interface ButtonProps {
