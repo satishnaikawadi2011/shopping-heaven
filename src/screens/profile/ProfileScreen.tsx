@@ -28,6 +28,15 @@ const navMenuItems = [
 				backgroundColor: MdColors.pink500
 		},
 		targetScreen:'Favourites'
+	},
+		{
+		title: 'Manage Addresses',
+		icon:
+			{
+				name: 'map-marker-multiple',
+				backgroundColor: MdColors.cyan400
+		},
+		targetScreen:'Addresses'
 	}
 ];
 

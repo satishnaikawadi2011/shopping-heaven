@@ -1,8 +1,8 @@
 import { RouteProp, useNavigation } from '@react-navigation/core';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
-import { Divider, Paragraph, Subheading, Title, useTheme } from 'react-native-paper';
+import { Divider, Paragraph, Snackbar, Subheading, Title, useTheme } from 'react-native-paper';
 import { Colors } from '../../constants/colors';
 import CartButton from '../components/headerButtons/CartButton';
 import AppButton from '../components/UI/app/Button';
@@ -21,16 +21,24 @@ interface ProductDetailScreenProps {
 }
 
 const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, route }) => {
+	const [snackbarVisible, setSnackbarVisible] = useState(false)
 	const theme = useTheme();
 	const product = route.params.product;
 	const { addToCart} = useCartStore()
 	const {categories} = useProductStore()
 	const category = categories.find(category => category._id === product.categoryId)
 	const handleAddToCart = () => {
-		addToCart({id:product._id,image:product.image,price:product.price,title:product.title})
+		addToCart({ id: product._id, image: product.image, price: product.price, title: product.title })
+		setSnackbarVisible(true);
 	}
 	return (
 		<View style={{ flex: 1 }}>
+			<Snackbar
+				visible={snackbarVisible}
+				onDismiss={() => setSnackbarVisible(false)}
+			duration={3000}>
+				{'Added to cart successfully'}
+      </Snackbar>
 			<View style={{ flex: 1 }}>
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 					<Image style={styles.image} source={{ uri: `https://eshopadminapp.herokuapp.com${product.image}` }} />
