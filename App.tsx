@@ -10,6 +10,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import AppTextInput from './src/components/UI/app/AppTextInput';
 import { centered } from './src/utils/commonStyles';
 import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
+import AddressItem from './src/components/UI/AddressItem';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -72,7 +73,7 @@ export default function App() {
 		<PaperProvider theme={theme}>
 			<AppNavigationContainer />
 			{/* <View style={centered}>
-				<AppTextInput icon="email" style={{}} placeholder="Username" />
+				<AddressItem />
 			</View> */}
 		</PaperProvider>
 	);
