@@ -9,9 +9,11 @@ import { CustomDarkTheme, CustomDefaultTheme } from './src/theme/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
 import AppTextInput from './src/components/UI/app/AppTextInput';
 import { centered } from './src/utils/commonStyles';
+import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
+	const { setProductIds, setProducts } = useFavouritesStore();
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
@@ -42,9 +44,18 @@ export default function App() {
 				setIsDarkTheme(themeData.isDarkTheme);
 			}
 		};
+		const getFavouritesData = async () => {
+			const favouritesData = await getFavouritesDataFromAsyncStorage();
+			if (favouritesData) {
+				setProducts(favouritesData.favourites);
+				setProductIds(favouritesData.ids);
+			}
+		};
+		getFavouritesData();
 		getCartData();
 		getUserData();
 		getThemeData();
+		getFavouritesData();
 	}, []);
 	const [
 		loaded

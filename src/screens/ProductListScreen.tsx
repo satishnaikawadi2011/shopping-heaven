@@ -8,8 +8,10 @@ import CartButton from '../components/headerButtons/CartButton';
 import CategoryList from '../components/UI/CategoryList';
 import ProductCard from '../components/UI/ProductCard';
 import { ProductsStackParamList } from '../navigation/AppNavigator';
+import { useFavouritesStore } from '../store/favourites';
 import { useProductStore } from '../store/product';
 import { centered } from '../utils/commonStyles';
+import filterOddFromArray from '../utils/filterOddElements';
 
 type ProductListScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductList'>;
 
@@ -21,7 +23,7 @@ interface ProductLisScreenProps{
 }
 
 const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) => {
-	const { products, loading, fetchAndSetProductsAndCategories, categories,selectedCategory } = useProductStore();
+	const { products, loading, fetchAndSetProductsAndCategories, categories, selectedCategory } = useProductStore();
 	useEffect(() => {
 		fetchAndSetProductsAndCategories();
 	}, []);
@@ -71,7 +73,7 @@ export const screenOptions:StackNavigationOptions | ((props: {
 	};	
 	} else if (routeName === 'Profile') {
 		return {
-			title:'Your Profile'
+			headerShown:false
 		}
 	} else if(routeName === 'AddAddress'){
 		return {

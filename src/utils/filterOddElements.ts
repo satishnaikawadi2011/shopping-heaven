@@ -12,3 +12,5 @@ const filterArray = (arrToHaveOdd: any[], arr: any[]) => {
 
 // Output
 // [0]
+
+export default filterArray;

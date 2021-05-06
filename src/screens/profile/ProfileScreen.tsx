@@ -1,11 +1,14 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Colors } from '../../constants/colors';
-import AppDivider from '../components/UI/app/AppDivider';
-import AppIcon from '../components/UI/app/AppIcon';
-import AppListItem from '../components/UI/app/AppListItem';
+import { Colors } from '../../../constants/colors';
+import AppDivider from '../../components/UI/app/AppDivider';
+import AppIcon from '../../components/UI/app/AppIcon';
+import AppListItem from '../../components/UI/app/AppListItem';
 import { Colors as MdColors, Switch, Text } from 'react-native-paper';
-import { useThemeStore } from '../store/theme';
+import { useThemeStore } from '../../store/theme';
+import { useAuthStore } from '../../store/auth';
+import { getFocusedRouteNameFromRoute, RouteProp, useNavigation } from '@react-navigation/core';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 const navMenuItems = [
 	{
@@ -14,7 +17,8 @@ const navMenuItems = [
 			{
 				name: 'bag-checked',
 				backgroundColor: Colors.accent
-			}
+		},
+		targetScreen:'Orders'
 	},
 	{
 		title: 'My Favourites',
@@ -22,19 +26,22 @@ const navMenuItems = [
 			{
 				name: 'heart-circle-outline',
 				backgroundColor: MdColors.pink500
-			}
+		},
+		targetScreen:'Favourites'
 	}
 ];
 
 const ProfileScreen = () => {
+	const navigation = useNavigation()
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
+	const {user} = useAuthStore()
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={styles.container}>
 				<AppListItem
-					title="Satish Naikawadi"
-					subTitle="saty@gmail.com"
-					image={require('../../assets/user.png')}
+					title={user!.username}
+					subTitle={user?.email}
+					image={require('../../../assets/user.png')}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -46,7 +53,10 @@ const ProfileScreen = () => {
 						return (
 							<AppListItem
 								title={item.title}
-								ImageComponent={<AppIcon name={item.icon.name} bgColor={item.icon.backgroundColor} />}
+								onPress={() => navigation.navigate(item.targetScreen)}
+								trailingIcon='greater-than'
+								ImageComponent={<AppIcon name={item.icon.name} bgColor={item.icon.backgroundColor}  
+							/>}
 							/>
 						);
 					}}

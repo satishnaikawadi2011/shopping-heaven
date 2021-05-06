@@ -1,47 +1,55 @@
 import React from 'react';
-import { StyleSheet, View, Image, ImageSourcePropType } from 'react-native';
+import { StyleSheet, View, Image, ImageSourcePropType, TouchableWithoutFeedback } from 'react-native';
 import { Text, useTheme, Surface } from 'react-native-paper';
 import { useTheme as useNavTheme } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface ListItemProps {
 	title: string;
 	subTitle?: string;
 	image?: ImageSourcePropType;
 	ImageComponent?: any;
+	trailingIcon?: any;
+	onPress?: () => void;
 }
 
-const AppListItem: React.FC<ListItemProps> = ({ image, title, subTitle, ImageComponent }) => {
+const AppListItem: React.FC<ListItemProps> = ({ trailingIcon, image, title, subTitle, ImageComponent, onPress }) => {
 	const theme = useTheme();
 	const navTheme = useNavTheme();
 	return (
-		<Surface
-			style={[
-				styles.container,
-				{ backgroundColor: navTheme.colors.card }
-			]}
-		>
-			{ImageComponent}
-			{image && <Image source={image} style={styles.image} />}
-			<View style={styles.details}>
-				<Text
-					style={[
-						styles.title
-					]}
-				>
-					{title}
-				</Text>
-				{subTitle && (
-					<Text
-						style={[
-							styles.subTitle,
-							{ color: theme.colors.placeholder }
-						]}
-					>
-						{subTitle}
-					</Text>
-				)}
-			</View>
-		</Surface>
+		<TouchableWithoutFeedback onPress={onPress}>
+			<Surface
+				style={[
+					styles.container,
+					{ backgroundColor: navTheme.colors.card }
+				]}
+			>
+				<View style={{ flexDirection: 'row' }}>
+					{ImageComponent}
+					{image && <Image source={image} style={styles.image} />}
+					<View style={styles.details}>
+						<Text
+							style={[
+								styles.title
+							]}
+						>
+							{title}
+						</Text>
+						{subTitle && (
+							<Text
+								style={[
+									styles.subTitle,
+									{ color: theme.colors.placeholder }
+								]}
+							>
+								{subTitle}
+							</Text>
+						)}
+					</View>
+				</View>
+				{trailingIcon && <MaterialCommunityIcons color={theme.colors.text} name={trailingIcon} />}
+			</Surface>
+		</TouchableWithoutFeedback>
 	);
 };
 
@@ -52,6 +60,8 @@ const styles = StyleSheet.create({
 		{
 			flexDirection: 'row',
 			marginHorizontal: 10,
+			justifyContent: 'space-between',
+			alignItems: 'center',
 			padding: 8
 		},
 	image:
