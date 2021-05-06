@@ -4,6 +4,7 @@ import AppForm from '../components/UI/form/AppForm';
 import * as Yup from 'yup';
 import AppFormField from '../components/UI/form/AppFormField';
 import SubmitButton from '../components/UI/form/SubmitButton';
+import { useAddressStore } from '../store/address';
 
 const initialValues = {
 	fullName: '',
@@ -28,9 +29,21 @@ const addressSchema = Yup.object({
 });
 
 const AddAddressScreen = () => {
+	const { addAddress } = useAddressStore();
 	const handleSubmit = (values: any, actions: any) => {
-		console.log(values);
-		actions.resetForm();
+		const { building, city, country, fullName, phoneNumber, pincode, road, state } = values;
+		addAddress({
+			building,
+			city,
+			country,
+			fullName,
+			phoneNumber,
+			pincode,
+			road,
+			state,
+			id: new Date().toISOString()
+		});
+		actions.resetForm({});
 	};
 	return (
 		<View style={{ flex: 1 }}>

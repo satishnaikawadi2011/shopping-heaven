@@ -2,21 +2,11 @@ import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import ProductCard from '../../components/UI/ProductCard';
-import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from '../../store/favourites';
+import { useFavouritesStore } from '../../store/favourites';
 import { centered } from '../../utils/commonStyles';
 
 const FavouritesScreen = () => {
 	const { products } = useFavouritesStore();
-	// useEffect(() => {
-	// 	const getFavouritesData = async () => {
-	// 		const favouritesData = await getFavouritesDataFromAsyncStorage();
-	// 		if (favouritesData) {
-	// 			setProducts(favouritesData.favourites);
-	// 			setProductIds(favouritesData.ids);
-	// 		}
-	// 	};
-	// 	getFavouritesData();
-	// }, []);
 	return (
 		<View style={{ flex: 1 }}>
 			{
