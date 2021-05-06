@@ -1,23 +1,35 @@
 import { useFormikContext } from 'formik';
 import React from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, TextInputProps, View } from 'react-native';
 import AppTextInput from '../app/AppTextInput';
 import AppErrorMessage from './AppErrorMessage';
 import { InputProps } from '../app/AppTextInput';
 
 interface FormFieldProps {
 	name: string;
+	small?: boolean;
 }
 
-const AppFormField: React.FC<FormFieldProps & TextInputProps & InputProps> = ({ name, ...props }) => {
+const AppFormField: React.FC<FormFieldProps & TextInputProps & InputProps> = ({ name, small, ...props }) => {
 	const { errors, touched, setFieldTouched, handleChange } = useFormikContext();
 	let formErrors: any = errors;
 	let formTouched: any = touched;
 	return (
-		<React.Fragment>
+		<View style={{ width: '100%' }}>
 			<AppTextInput onChangeText={handleChange(name)} onBlur={() => setFieldTouched(name)} {...props} />
-			<AppErrorMessage errorMessage={formErrors[name]} visible={formTouched[name]} />
-		</React.Fragment>
+			<AppErrorMessage
+				style={{
+					marginLeft: 20,
+					width:
+
+							small ? '45%' :
+							'100%',
+					alignSelf: 'center'
+				}}
+				errorMessage={formErrors[name]}
+				visible={formTouched[name]}
+			/>
+		</View>
 	);
 };
 

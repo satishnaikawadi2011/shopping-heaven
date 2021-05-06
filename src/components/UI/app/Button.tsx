@@ -8,7 +8,7 @@ interface ButtonProps {
 	bgColor?: string;
 	titleColor?: string;
 	loading?: boolean;
-	onPress?: () => void;
+	onPress?: any;
 }
 
 const AppButton: React.FC<ButtonProps> = ({

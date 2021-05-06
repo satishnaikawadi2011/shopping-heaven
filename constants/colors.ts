@@ -5,5 +5,7 @@ export const Colors = {
 	black: '#000000',
 	white: '#ffffff',
 	medium: 'rgb(128, 128, 128)',
-	light: ' #f2f2f2'
+	light: ' #f2f2f2',
+	lightTextInputBg: '#e6e6e6',
+	darkTextInputBg: 'rgb(89, 89, 89)'
 };

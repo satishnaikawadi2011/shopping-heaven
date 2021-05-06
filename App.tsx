@@ -59,10 +59,10 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			{/* <AppNavigationContainer /> */}
-			<View style={centered}>
+			<AppNavigationContainer />
+			{/* <View style={centered}>
 				<AppTextInput icon="email" style={{}} placeholder="Username" />
-			</View>
+			</View> */}
 		</PaperProvider>
 	);
 }

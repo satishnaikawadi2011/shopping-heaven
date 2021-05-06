@@ -5,10 +5,10 @@ import { Text } from 'react-native-paper';
 interface ErrorMessageProps {
 	errorMessage: string;
 	style?: TextStyle;
-	visible?: boolean;
+	visible: boolean;
 }
 
-const AppErrorMessage: React.FC<ErrorMessageProps> = ({ errorMessage, style, visible = true }) => {
+const AppErrorMessage: React.FC<ErrorMessageProps> = ({ errorMessage, style, visible }) => {
 	if (!visible) {
 		return null;
 	}

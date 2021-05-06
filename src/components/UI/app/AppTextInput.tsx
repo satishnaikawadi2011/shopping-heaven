@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInputProps, ViewStyle, StyleSheet, View, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
+import { useTheme } from 'react-native-paper';
 import { Colors } from '../../../../constants/colors';
 
 export interface InputProps {
@@ -15,12 +15,26 @@ const AppTextInput: React.FC<TextInputProps & InputProps> = ({ style, icon, ...p
 		<View
 			style={[
 				styles.container,
-				{ backgroundColor: theme.colors.background },
+				{
+					backgroundColor:
+
+							theme.dark ? Colors.darkTextInputBg :
+							Colors.lightTextInputBg
+				},
 				style
 			]}
 		>
-			{icon && <MaterialCommunityIcons style={styles.icon} color={Colors.medium} name={icon} size={20} />}
-			<TextInput style={styles.textInput} {...props} />
+			{icon && (
+				<MaterialCommunityIcons style={styles.icon} color={theme.colors.placeholder} name={icon} size={20} />
+			)}
+			<TextInput
+				placeholderTextColor={theme.colors.placeholder}
+				style={[
+					styles.textInput,
+					{ color: theme.colors.text }
+				]}
+				{...props}
+			/>
 		</View>
 	);
 };
@@ -36,7 +50,8 @@ const styles = StyleSheet.create({
 			padding: 15,
 			alignSelf: 'center',
 			marginVertical: 10,
-			alignItems: 'center'
+			alignItems: 'center',
+			overflow: 'hidden'
 		},
 	icon:
 		{
