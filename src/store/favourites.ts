@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FavouritesStore = {
 	products: Product[];
+	productIds: string[];
+	setProductIds: (productIds: string[]) => void;
 	setProducts: (products: Product[]) => void;
 	addToFavourites: (product: Product) => void;
 	removeFromFavourites: (productId: string) => void;
@@ -12,21 +14,29 @@ type FavouritesStore = {
 
 export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
 	products: [],
+	productIds: [],
 	setProducts: (products) => set((state) => ({ ...state, products })),
+	setProductIds: (productIds) => set((state) => ({ ...state, productIds })),
 	addToFavourites:
 		(product) => {
 			get().setProducts([
 				product,
 				...get().products
 			]);
-			saveFavouritesDataToAsyncStorage(get().products);
+			get().setProductIds([
+				product._id,
+				...get().productIds
+			]);
+			saveFavouritesDataToAsyncStorage(get().products, get().productIds);
 		},
 	removeFromFavourites:
 		(productId) => {
 			const favouriteProducts = get().products;
 			const updatedFavouriteProducts = favouriteProducts.filter((product) => product._id !== productId);
+			const updatedProductIds = get().productIds.filter((pId) => pId !== productId);
 			get().setProducts(updatedFavouriteProducts);
-			saveFavouritesDataToAsyncStorage(get().products);
+			get().setProductIds(updatedProductIds);
+			saveFavouritesDataToAsyncStorage(get().products, get().productIds);
 		},
 	isFavourite:
 		(productId) => {
@@ -39,8 +49,8 @@ export const useFavouritesStore = create<FavouritesStore>((set, get) => ({
 		}
 }));
 
-const saveFavouritesDataToAsyncStorage = (products: Product[]) => {
-	AsyncStorage.setItem('favouritesData', JSON.stringify({ favourites: products }));
+const saveFavouritesDataToAsyncStorage = (products: Product[], productIds: string[]) => {
+	AsyncStorage.setItem('favouritesData', JSON.stringify({ favourites: products, ids: productIds }));
 };
 
 export const getFavouritesDataFromAsyncStorage = async () => {
