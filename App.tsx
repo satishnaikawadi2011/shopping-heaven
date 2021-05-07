@@ -17,7 +17,7 @@ export default function App() {
 	// https://eshopadminapp.netlify.app/
 	const { setProductIds, setProducts } = useFavouritesStore();
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
-	const { setAddresses, setPreferredAddress } = useAddressStore();
+	const { setAddresses, setPreferredAddress, preferredAddress } = useAddressStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
 		CustomDefaultTheme;
