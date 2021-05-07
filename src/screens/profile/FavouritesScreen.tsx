@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Title } from 'react-native-paper';
 import ProductCard from '../../components/UI/ProductCard';
 import { useFavouritesStore } from '../../store/favourites';
 import { centered } from '../../utils/commonStyles';
+import FavouriteIcon from '../../icons/FavouriteIcon';
 
 const FavouritesScreen = () => {
 	const { products } = useFavouritesStore();
@@ -15,7 +16,8 @@ const FavouritesScreen = () => {
 						centered
 					]}
 				>
-					<Text>You don't have any favourites.Add some.</Text>
+					<FavouriteIcon height={150} width={150} />
+					<Title style={styles.title}>You don't have any favourites.Add some.</Title>
 				</View> :
 				<FlatList
 					keyExtractor={(item) => item._id}
@@ -30,4 +32,10 @@ const FavouritesScreen = () => {
 
 export default FavouritesScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	title:
+		{
+			fontSize: 20,
+			marginVertical: 20
+		}
+});

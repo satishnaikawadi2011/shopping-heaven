@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Text, Colors as MuiColors } from 'react-native-paper';
+import { Colors as MuiColors, Title } from 'react-native-paper';
 import AddressItem from '../../components/UI/address/AddressItem';
 import AppDivider from '../../components/UI/app/AppDivider';
+import AddressIcon from '../../icons/AddressIcon';
 import { useAddressStore } from '../../store/address';
 import { centered } from '../../utils/commonStyles';
 
@@ -17,7 +18,8 @@ const AddressListScreen = () => {
 						centered
 					]}
 				>
-					<Text>You don't have any addresses added.</Text>
+					<AddressIcon height={150} width={150} />
+					<Title style={styles.title}>You don't have any addresses added.</Title>
 				</View> :
 				<FlatList
 					ItemSeparatorComponent={AppDivider}
@@ -45,4 +47,10 @@ const AddressListScreen = () => {
 
 export default AddressListScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	title:
+		{
+			fontSize: 20,
+			marginVertical: 20
+		}
+});

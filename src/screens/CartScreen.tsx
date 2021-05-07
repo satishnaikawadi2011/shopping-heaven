@@ -9,6 +9,8 @@ import DoubleBlockButton from '../components/UI/app/DoubleBlockButton';
 import { CartItem } from '../models/CartItem';
 import { useCartStore } from '../store/cart';
 import SelectAddressBottomSheet from '../components/UI/address/SelectAddressBottomSheet';
+import { centered } from '../utils/commonStyles';
+import EmptyCartIcon from '../icons/EmptyCartIcon';
 
 const CartScreen = () => {
 	const [
@@ -20,6 +22,14 @@ const CartScreen = () => {
 	const handleViewCartDetails = () => {
 		cartItemListRef.current.scrollToEnd({ animated: true });
 	};
+	if (cartItems.length === 0) {
+		return (
+			<View style={centered}>
+				<EmptyCartIcon height={150} width={150} />
+				<Title style={styles.title}>Your cart is empty.</Title>
+			</View>
+		);
+	}
 	return (
 		<React.Fragment>
 			<SelectAddressBottomSheet visible={bsVisible} onBackdropPress={() => setBsVisible(false)} />
@@ -43,22 +53,24 @@ const CartScreen = () => {
 						}}
 					/>
 				</View>
-				<Surface style={styles.surface}>
-					<View style={styles.totalAmount}>
-						<Title>${totalAmount()}</Title>
-						<Pressable onPress={handleViewCartDetails}>
-							<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View cart details</Text>
-						</Pressable>
-					</View>
-					<Button
-						mode="contained"
-						onPress={() => setBsVisible(true)}
-						style={{ alignSelf: 'center' }}
-						color={Colors.accent}
-					>
-						place order
-					</Button>
-				</Surface>
+				{cartItems.length > 0 && (
+					<Surface style={styles.surface}>
+						<View style={styles.totalAmount}>
+							<Title>${totalAmount()}</Title>
+							<Pressable onPress={handleViewCartDetails}>
+								<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View cart details</Text>
+							</Pressable>
+						</View>
+						<Button
+							mode="contained"
+							onPress={() => setBsVisible(true)}
+							style={{ alignSelf: 'center' }}
+							color={Colors.accent}
+						>
+							place order
+						</Button>
+					</Surface>
+				)}
 			</View>
 		</React.Fragment>
 	);
@@ -85,5 +97,10 @@ const styles = StyleSheet.create({
 
 			elevation: 5
 		},
-	totalAmount: {}
+	totalAmount: {},
+	title:
+		{
+			fontSize: 20,
+			marginVertical: 20
+		}
 });

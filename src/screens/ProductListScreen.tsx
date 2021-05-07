@@ -2,11 +2,12 @@ import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core'
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { FlatList,  StyleSheet, View } from 'react-native';
-import { ActivityIndicator,Text } from 'react-native-paper';
+import { ActivityIndicator,Title } from 'react-native-paper';
 import { Colors } from '../../constants/colors';
 import CartButton from '../components/headerButtons/CartButton';
 import CategoryList from '../components/UI/CategoryList';
 import ProductCard from '../components/UI/ProductCard';
+import SadEmojiIcon from '../icons/SadEmojiIcon';
 import { ProductsStackParamList } from '../navigation/AppNavigator';
 import { useFavouritesStore } from '../store/favourites';
 import { useProductStore } from '../store/product';
@@ -38,8 +39,9 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 	return (
 		<View style={{flex:1}}>
 			<CategoryList categories={categories} />
-			{filteredProducts.length === 0?<View style={[centered]}>
-				<Text>No products found !!</Text>
+			{filteredProducts.length === 0 ? <View style={[centered]}>
+				<SadEmojiIcon height={150} width={150}/>
+				<Title style={styles.title}>No products found !!</Title>
 			</View> :
 			<FlatList
 				keyExtractor={(item) => item._id}
@@ -56,6 +58,10 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 export default ProductListScreen;
 
 const styles = StyleSheet.create({
+	title: {
+		fontSize: 20,
+		marginVertical:20
+	}
 });
 
 
