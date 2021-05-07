@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import AppFormField from '../components/UI/form/AppFormField';
 import SubmitButton from '../components/UI/form/SubmitButton';
 import { useAddressStore } from '../store/address';
+import { useNavigation } from '@react-navigation/core';
 
 const initialValues = {
 	fullName: '',
@@ -28,7 +29,7 @@ const addressSchema = Yup.object({
 	building: Yup.string().required('This field is required.')
 });
 
-const AddAddressScreen = () => {
+const AddAddressScreen = ({ navigation }: any) => {
 	const { addAddress } = useAddressStore();
 	const handleSubmit = (values: any, actions: any) => {
 		const { building, city, country, fullName, phoneNumber, pincode, road, state } = values;
@@ -43,6 +44,7 @@ const AddAddressScreen = () => {
 			state,
 			id: new Date().toISOString()
 		});
+		actions.resetForm({});
 	};
 	return (
 		<View style={{ flex: 1 }}>

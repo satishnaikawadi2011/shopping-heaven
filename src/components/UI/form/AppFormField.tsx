@@ -11,12 +11,18 @@ interface FormFieldProps {
 }
 
 const AppFormField: React.FC<FormFieldProps & TextInputProps & InputProps> = ({ name, small, ...props }) => {
-	const { errors, touched, setFieldTouched, handleChange } = useFormikContext();
+	const { errors, touched, setFieldTouched, values, setFieldValue } = useFormikContext();
 	let formErrors: any = errors;
 	let formTouched: any = touched;
+	let myValues = values as any;
 	return (
 		<View style={{ width: '100%' }}>
-			<AppTextInput onChangeText={handleChange(name)} onBlur={() => setFieldTouched(name)} {...props} />
+			<AppTextInput
+				onChangeText={(text) => setFieldValue(name, text)}
+				value={myValues[name]}
+				onBlur={() => setFieldTouched(name)}
+				{...props}
+			/>
 			<AppErrorMessage
 				style={{
 					marginLeft: 20,
