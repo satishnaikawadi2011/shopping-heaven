@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import AppForm from '../components/UI/form/AppForm';
 import * as Yup from 'yup';
 import AppFormField from '../components/UI/form/AppFormField';
 import SubmitButton from '../components/UI/form/SubmitButton';
 import { useAddressStore } from '../store/address';
-import { useNavigation } from '@react-navigation/core';
+import { Snackbar } from 'react-native-paper';
 
 const initialValues = {
 	fullName: '',
@@ -29,7 +29,11 @@ const addressSchema = Yup.object({
 	building: Yup.string().required('This field is required.')
 });
 
-const AddAddressScreen = ({ navigation }: any) => {
+const AddAddressScreen = (props: any) => {
+	const [
+		snackbarVisible,
+		setSnackbarVisible
+	] = useState(false);
 	const { addAddress } = useAddressStore();
 	const handleSubmit = (values: any, actions: any) => {
 		const { building, city, country, fullName, phoneNumber, pincode, road, state } = values;
@@ -45,9 +49,13 @@ const AddAddressScreen = ({ navigation }: any) => {
 			id: new Date().toISOString()
 		});
 		actions.resetForm({});
+		setSnackbarVisible(true);
 	};
 	return (
 		<View style={{ flex: 1 }}>
+			<Snackbar visible={snackbarVisible} onDismiss={() => setSnackbarVisible(false)} duration={3000}>
+				{'Added your address successfully'}
+			</Snackbar>
 			<ScrollView>
 				<AppForm initialValues={initialValues} validationSchema={addressSchema} onSubmit={handleSubmit}>
 					<AppFormField
