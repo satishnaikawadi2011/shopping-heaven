@@ -17,7 +17,7 @@ export default function App() {
 	// https://eshopadminapp.netlify.app/
 	const { setProductIds, setProducts } = useFavouritesStore();
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
-	const { setAddresses } = useAddressStore();
+	const { setAddresses, setPreferredAddress } = useAddressStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
 		CustomDefaultTheme;
@@ -58,6 +58,7 @@ export default function App() {
 			const addressData = await getAddressDataFromAsyncStorage();
 			if (addressData) {
 				setAddresses(addressData.addresses);
+				setPreferredAddress(addressData.addresses[0]);
 			}
 		};
 		getFavouritesData();

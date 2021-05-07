@@ -43,7 +43,7 @@ const AddAddressScreen = () => {
 			state,
 			id: new Date().toISOString()
 		});
-		actions.resetForm({});
+		actions.setValues(initialValues, false);
 	};
 	return (
 		<View style={{ flex: 1 }}>

@@ -4,14 +4,13 @@ import { StyleSheet, View } from 'react-native';
 import { Surface, Text, Title, useTheme, Colors as MuiColors } from 'react-native-paper';
 import { DEVICE_WIDTH } from '../../../constants';
 import { Address } from '../../models/Address';
-import { useAddressStore } from '../../store/address';
 
 interface AddressItemProps {
 	address: Address;
+	TailingComponent?: any;
 }
 
-const AddressItem: React.FC<AddressItemProps> = ({ address }) => {
-	const { removeAddress } = useAddressStore();
+const AddressItem: React.FC<AddressItemProps> = ({ address, TailingComponent }) => {
 	const { building, city, fullName, country, phoneNumber, pincode, road, state, id } = address;
 	const theme = useTheme();
 	return (
@@ -36,14 +35,7 @@ const AddressItem: React.FC<AddressItemProps> = ({ address }) => {
 					<Text style={styles.text}>{phoneNumber}</Text>
 				</View>
 			</View>
-			<View style={styles.thirdContainer}>
-				<MaterialCommunityIcons
-					onPress={() => removeAddress(id)}
-					name="delete"
-					size={30}
-					color={MuiColors.red600}
-				/>
-			</View>
+			<View style={styles.thirdContainer}>{TailingComponent}</View>
 		</Surface>
 	);
 };
