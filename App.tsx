@@ -10,14 +10,14 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import AppTextInput from './src/components/UI/app/AppTextInput';
 import { centered } from './src/utils/commonStyles';
 import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
-import AddressItem from './src/components/UI/AddressItem';
+import AddressItem from './src/components/UI/address/AddressItem';
 import { getAddressDataFromAsyncStorage, useAddressStore } from './src/store/address';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
 	const { setProductIds, setProducts } = useFavouritesStore();
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
-	const { setAddresses, setPreferredAddress, preferredAddress } = useAddressStore();
+	const { setAddresses, setPreferredAddress } = useAddressStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
 		CustomDefaultTheme;

@@ -2,8 +2,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Surface, Text, Title, useTheme, Colors as MuiColors } from 'react-native-paper';
-import { DEVICE_WIDTH } from '../../../constants';
-import { Address } from '../../models/Address';
+import { DEVICE_WIDTH } from '../../../../constants';
+import { Address } from '../../../models/Address';
 
 interface AddressItemProps {
 	address: Address;

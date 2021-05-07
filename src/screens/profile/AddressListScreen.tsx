@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Text, Colors as MuiColors } from 'react-native-paper';
-import AddressItem from '../../components/UI/AddressItem';
+import AddressItem from '../../components/UI/address/AddressItem';
 import AppDivider from '../../components/UI/app/AppDivider';
 import { useAddressStore } from '../../store/address';
 import { centered } from '../../utils/commonStyles';
