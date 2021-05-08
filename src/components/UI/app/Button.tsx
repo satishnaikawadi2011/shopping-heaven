@@ -9,6 +9,7 @@ interface ButtonProps {
 	titleColor?: string;
 	loading?: boolean;
 	onPress?: any;
+	disabled?: boolean;
 }
 
 const AppButton: React.FC<ButtonProps> = ({
@@ -16,10 +17,25 @@ const AppButton: React.FC<ButtonProps> = ({
 	bgColor = Colors.primary,
 	titleColor = Colors.white,
 	loading = false,
-	onPress = () => {}
+	onPress = () => {},
+	disabled
 }) => {
 	return (
-		<Pressable onPress={onPress} style={{ ...styles.button, backgroundColor: bgColor }}>
+		<Pressable
+			onPress={
+
+					disabled ? () => {} :
+					onPress
+			}
+			style={{
+				...styles.button,
+				backgroundColor: bgColor,
+				opacity:
+
+						disabled ? 0.7 :
+						1
+			}}
+		>
 			{
 				loading ? <ActivityIndicator size="small" color={Colors.white} /> :
 				<Text style={{ ...styles.text, color: titleColor }}>{title}</Text>}

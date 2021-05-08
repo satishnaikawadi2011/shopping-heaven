@@ -12,6 +12,10 @@ import { centered } from './src/utils/commonStyles';
 import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
 import AddressItem from './src/components/UI/address/AddressItem';
 import { getAddressDataFromAsyncStorage, useAddressStore } from './src/store/address';
+import AppForm from './src/components/UI/form/AppForm';
+import * as Yup from 'yup';
+import SubmitButton from './src/components/UI/form/SubmitButton';
+import CheckoutScreen from './src/screens/CheckoutScreen';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -81,9 +85,10 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			<AppNavigationContainer />
+			{/* <AppNavigationContainer /> */}
+			<CheckoutScreen />
 			{/* <View style={centered}>
-				<AddressItem />
+				<CreditCardFormField  />
 			</View> */}
 		</PaperProvider>
 	);
