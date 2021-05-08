@@ -25,9 +25,13 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 	const [snackbarVisible, setSnackbarVisible] = useState(false)
 	const theme = useTheme();
 	const product = route.params.product;
-	const { addToCart} = useCartStore()
+	const { addToCart,isInCart} = useCartStore()
 	const {categories} = useProductStore()
 	const category = categories.find(category => category._id === product.categoryId)
+	const inCart = isInCart(product._id);
+	const handleNavigateToCart = () => {
+		navigation.navigate('Cart');
+	}
 	const handleAddToCart = () => {
 		addToCart({ id: product._id, image: product.image, price: product.price, title: product.title })
 		setSnackbarVisible(true);
@@ -63,7 +67,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 				</ScrollView>
 			</View>
 	<DoubleBlockButton
-				leftButtonProps={{ label: 'add to cart', icon: 'cart-plus',onPress:handleAddToCart }}
+				leftButtonProps={{ label: inCart ? 'go to cart':'add to cart', icon: 'cart-plus',onPress:inCart ?handleNavigateToCart :handleAddToCart }}
 				rightButtonProps={{ label: 'buy now', onPress: () => {} }}
 			/>
 		</View>

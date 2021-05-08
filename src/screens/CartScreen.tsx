@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Pressable } from 'react-native';
-import { Button, Surface, Text, Title } from 'react-native-paper';
+import { Button, FAB, Surface, Text, Title, Colors as MuiColors } from 'react-native-paper';
 import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../constants';
 import { Colors } from '../../constants/colors';
 import CartDetails from '../components/UI/cart/CartDetails';
 import CartItemTile from '../components/UI/cart/CartItemTile';
-import DoubleBlockButton from '../components/UI/app/DoubleBlockButton';
 import { CartItem } from '../models/CartItem';
 import { useCartStore } from '../store/cart';
 import SelectAddressBottomSheet from '../components/UI/address/SelectAddressBottomSheet';
@@ -18,7 +17,7 @@ const CartScreen = () => {
 		setBsVisible
 	] = useState(false);
 	const cartItemListRef: any = useRef<React.LegacyRef<FlatList<CartItem>> | undefined>(null);
-	const { cartItems, totalAmount, itemCount } = useCartStore();
+	const { cartItems, totalAmount, itemCount, clearCart } = useCartStore();
 	const handleViewCartDetails = () => {
 		cartItemListRef.current.scrollToEnd({ animated: true });
 	};
@@ -51,6 +50,15 @@ const CartScreen = () => {
 							}
 							return <CartItemTile cartItem={item} />;
 						}}
+					/>
+					<FAB
+						style={[
+							styles.fab,
+							{ backgroundColor: MuiColors.red600 }
+						]}
+						icon="cart-off"
+						color={MuiColors.white}
+						onPress={clearCart}
 					/>
 				</View>
 				{cartItems.length > 0 && (
@@ -105,5 +113,12 @@ const styles = StyleSheet.create({
 		{
 			fontSize: 20,
 			marginVertical: 20
+		},
+	fab:
+		{
+			position: 'absolute',
+			margin: 16,
+			right: 0,
+			bottom: 0
 		}
 });

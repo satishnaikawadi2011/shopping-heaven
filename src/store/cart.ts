@@ -9,6 +9,7 @@ type CartStore = {
 	setCartItems: (items: CartItem[]) => void;
 	addToCart: (item: { id: string; price: number; image: string; title: string }) => void;
 	removeFromCart: (productId: string) => void;
+	isInCart: (productId: string) => boolean;
 	clearCart: () => void;
 	itemCount: () => number;
 	totalAmount: () => number;
@@ -20,6 +21,13 @@ export const useCartStore = create<CartStore>((set, get) => ({
 	loading: false,
 	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
 	setCartItems: (items: CartItem[]) => set((state) => ({ ...state, cartItems: items })),
+	isInCart:
+		(productId) => {
+			const cartItems = get().cartItems;
+			const cartItem = cartItems.find((cartItm) => cartItm._id === productId);
+			if (cartItem) return true;
+			return false;
+		},
 	addToCart:
 		({ id, image, price, title }) => {
 			const cartItems = get().cartItems;
@@ -93,12 +101,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
 const saveCartDataToAsyncStorage = (items: CartItem[]) => {
 	AsyncStorage.setItem('cartData', JSON.stringify({ cartItems: items }));
-	// console.log('in cart store', JSON.stringify({ cartItems: items }));
 };
 
 export const getCartDataFromAsyncStorage = async () => {
 	const cartItems: any = await AsyncStorage.getItem('cartData');
-	// console.log('getting from storage', JSON.parse(cartItems));
 	if (cartItems) {
 		return JSON.parse(cartItems);
 	}
