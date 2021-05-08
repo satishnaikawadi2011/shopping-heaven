@@ -7,6 +7,7 @@ import { Product } from '../../models/Product';
 import { useProductStore } from '../../store/product';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFavouritesStore } from '../../store/favourites';
+import { INDIAN_RUPEE_SIGN } from '../../../constants';
 
 interface ProductCardProps {
 	product: Product;
@@ -36,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 					<View>
 											<Title style={{ marginVertical: 10 }}>{title}</Title>
 					<Subheading style={{ fontSize: 20, color: Colors.primary, fontWeight: 'bold' }}>
-						$ {price}
+						{INDIAN_RUPEE_SIGN}{price}
 					</Subheading>
 					</View>
 					<View style={styles.row}>

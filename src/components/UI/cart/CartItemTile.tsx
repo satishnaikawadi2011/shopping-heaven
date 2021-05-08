@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Subheading, Surface, Text, Title } from 'react-native-paper';
-import { DEVICE_WIDTH } from '../../../../constants';
+import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../../constants';
 import { CartItem } from '../../../models/CartItem';
 import { useCartStore } from '../../../store/cart';
-import DoubleBlockButton from './DoubleBlockButton';
+import DoubleBlockButton from '../app/DoubleBlockButton';
 
 interface CartTItemileProps {
 	cartItem: CartItem;
@@ -27,14 +27,16 @@ const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem }) => {
 					<Title>{title}</Title>
 					<View style={{ flexDirection: 'row' }}>
 						<Subheading style={{ marginRight: 20 }}>
-							<Text style={styles.bold}>Price</Text> : ${price}
+							<Text style={styles.bold}>Price</Text> : {INDIAN_RUPEE_SIGN}
+							{price}
 						</Subheading>
 						<Subheading>
 							<Text style={styles.bold}>Quantity</Text> : {quantity}
 						</Subheading>
 					</View>
 					<Subheading>
-						<Text style={styles.bold}>Subtotal</Text> : ${price * quantity}
+						<Text style={styles.bold}>Subtotal</Text> : {INDIAN_RUPEE_SIGN}
+						{price * quantity}
 					</Subheading>
 				</View>
 			</View>

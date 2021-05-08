@@ -11,7 +11,7 @@ const TabNavigator = createBottomTabNavigator();
 
 const HomeTabNavigator = () => {
 	return (
-		<TabNavigator.Navigator tabBarOptions={{ activeTintColor: Colors.primary }}>
+		<TabNavigator.Navigator tabBarOptions={{ activeTintColor: Colors.primary, keyboardHidesTabBar: true }}>
 			<TabNavigator.Screen
 				name="Home"
 				component={ProductListScreen}

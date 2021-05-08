@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Pressable } from 'react-native';
 import { Button, Surface, Text, Title } from 'react-native-paper';
-import { DEVICE_WIDTH } from '../../constants';
+import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../constants';
 import { Colors } from '../../constants/colors';
-import CartDetails from '../components/UI/CartDetails';
-import CartItemTile from '../components/UI/app/CartItemTile';
+import CartDetails from '../components/UI/cart/CartDetails';
+import CartItemTile from '../components/UI/cart/CartItemTile';
 import DoubleBlockButton from '../components/UI/app/DoubleBlockButton';
 import { CartItem } from '../models/CartItem';
 import { useCartStore } from '../store/cart';
@@ -56,7 +56,10 @@ const CartScreen = () => {
 				{cartItems.length > 0 && (
 					<Surface style={styles.surface}>
 						<View style={styles.totalAmount}>
-							<Title>${totalAmount()}</Title>
+							<Title>
+								{INDIAN_RUPEE_SIGN}
+								{totalAmount()}
+							</Title>
 							<Pressable onPress={handleViewCartDetails}>
 								<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View cart details</Text>
 							</Pressable>

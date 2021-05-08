@@ -3,6 +3,7 @@ import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/s
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Divider, Paragraph, Snackbar, Subheading, Title, useTheme } from 'react-native-paper';
+import { INDIAN_RUPEE_SIGN } from '../../constants';
 import { Colors } from '../../constants/colors';
 import CartButton from '../components/headerButtons/CartButton';
 import AppButton from '../components/UI/app/Button';
@@ -45,7 +46,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 			<View style={styles.container}>
 				<View style={styles.subContainer}>
 					<Title style={styles.title}>{product.title}</Title>
-					<Subheading style={styles.subHeading}>$ {product.price}</Subheading>
+							<Subheading style={styles.subHeading}>{INDIAN_RUPEE_SIGN}{product.price}</Subheading>
 				</View>
 				<Divider style={{ height: 0.2, backgroundColor: theme.colors.placeholder }} />
 				<View style={{ flex: 1 }}>

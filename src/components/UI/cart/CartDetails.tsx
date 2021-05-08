@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Surface, Title } from 'react-native-paper';
-import { DEVICE_WIDTH } from '../../../constants';
-import AppDivider from './app/AppDivider';
+import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../../constants';
+import AppDivider from '../app/AppDivider';
 
 interface CartDetailsProps {
 	totalItems: number;
@@ -33,7 +33,10 @@ const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxe
 					<Text style={styles.bold}>Price ({totalItems} items)</Text>
 				</View>
 				<View>
-					<Text>${totalAmount}</Text>
+					<Text>
+						{INDIAN_RUPEE_SIGN}
+						{totalAmount}
+					</Text>
 				</View>
 			</View>
 			<View style={styles.subheading}>
@@ -50,7 +53,10 @@ const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxe
 					<Title>Total Amount</Title>
 				</View>
 				<View>
-					<Title style={{ color: 'green' }}>${totalAmount + actualTax}</Title>
+					<Title style={{ color: 'green' }}>
+						{INDIAN_RUPEE_SIGN}
+						{totalAmount + actualTax}
+					</Title>
 				</View>
 			</View>
 		</Surface>
