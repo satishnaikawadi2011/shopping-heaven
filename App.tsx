@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
 import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';

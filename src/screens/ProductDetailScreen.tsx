@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation } from '@react-navigation/core';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Divider, Paragraph, Snackbar, Subheading, Title, useTheme } from 'react-native-paper';
 import { INDIAN_RUPEE_SIGN } from '../../constants';
@@ -11,6 +11,7 @@ import DoubleBlockButton from '../components/UI/app/DoubleBlockButton';
 import { ProductsStackParamList } from '../navigation/AppNavigator';
 import { useCartStore } from '../store/cart';
 import { useProductStore } from '../store/product';
+import useLocation from '../hooks/useLocation'
 
 type ProductDetailScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductDetail'>;
 
@@ -36,6 +37,8 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 		addToCart({ id: product._id, image: product.image, price: product.price, title: product.title })
 		setSnackbarVisible(true);
 	}
+	const { isGranted, location } = useLocation()
+	console.log(isGranted,location,)
 	return (
 		<View style={{ flex: 1 }}>
 			<Snackbar
