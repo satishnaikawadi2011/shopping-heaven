@@ -1,7 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { RouteProp } from '@react-navigation/core';
+import { StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Colors as MuiColors, Title } from 'react-native-paper';
+import AddButton from '../../components/headerButtons/AddButton';
 import AddressItem from '../../components/UI/address/AddressItem';
 import AppDivider from '../../components/UI/app/AppDivider';
 import AddressIcon from '../../icons/AddressIcon';
@@ -54,3 +57,17 @@ const styles = StyleSheet.create({
 			marginVertical: 20
 		}
 });
+
+export const screenOptions:
+	| StackNavigationOptions
+	| ((
+			props: {
+				route: RouteProp<Record<string, object | undefined>, 'Addresses'>;
+				navigation: any;
+			}
+		) => StackNavigationOptions)
+	| undefined = ({ navigation, route }) => {
+	return {
+		headerRight: () => <AddButton />
+	};
+};

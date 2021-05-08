@@ -7,3 +7,10 @@ export const centered: StyleProp<ViewStyle> = {
 	alignItems: 'center',
 	width: DEVICE_WIDTH
 };
+
+export const fab: StyleProp<ViewStyle> = {
+	position: 'absolute',
+	margin: 16,
+	right: 0,
+	bottom: 0
+};

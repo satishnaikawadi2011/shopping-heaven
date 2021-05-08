@@ -1,12 +1,12 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
-import { RadioButton, Text, Title } from 'react-native-paper';
+import { RadioButton, Text, Title, FAB } from 'react-native-paper';
 import { DEVICE_HEIGHT } from '../../../../constants';
 import { Colors } from '../../../../constants/colors';
 import { useAddressStore } from '../../../store/address';
-import { centered } from '../../../utils/commonStyles';
+import { centered, fab } from '../../../utils/commonStyles';
 import AppDivider from '../app/AppDivider';
 import AddressItem from './AddressItem';
 
@@ -21,6 +21,7 @@ const SelectAddressBottomSheet: React.FC<AddressBottomSheetProps> = ({
 	onBackButtonPress,
 	onBackdropPress
 }) => {
+	const navigation = useNavigation();
 	const theme = useTheme();
 	const { addresses, preferredAddress, setPreferredAddress } = useAddressStore();
 	const handleRadioButtonChange = (newValue: any) => {
@@ -62,6 +63,7 @@ const SelectAddressBottomSheet: React.FC<AddressBottomSheetProps> = ({
 								}}
 							/>
 						</RadioButton.Group>
+						<FAB icon="plus" style={fab} onPress={() => navigation.navigate('AddAddress')} />
 					</View>}
 			</View>
 		</BottomSheet>

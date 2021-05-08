@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { FlatList,  StyleSheet, View } from 'react-native';
 import { ActivityIndicator,Title } from 'react-native-paper';
 import { Colors } from '../../constants/colors';
+import AddButton from '../components/headerButtons/AddButton';
 import CartButton from '../components/headerButtons/CartButton';
 import CategoryList from '../components/UI/CategoryList';
 import ProductCard from '../components/UI/ProductCard';
@@ -83,7 +84,7 @@ export const screenOptions:StackNavigationOptions | ((props: {
 		}
 	} else if(routeName === 'AddAddress'){
 		return {
-			title:'Add Address'
+			title: 'Add Address',
 		}
 	}
 	return {
