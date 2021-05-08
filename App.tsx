@@ -85,8 +85,8 @@ export default function App() {
 	}
 	return (
 		<PaperProvider theme={theme}>
-			{/* <AppNavigationContainer /> */}
-			<CheckoutScreen />
+			<AppNavigationContainer />
+			{/* <CheckoutScreen /> */}
 			{/* <View style={centered}>
 				<CreditCardFormField  />
 			</View> */}
