@@ -12,6 +12,8 @@ import { ProductsStackParamList } from '../navigation/AppNavigator';
 import { useCartStore } from '../store/cart';
 import { useProductStore } from '../store/product';
 import useLocation from '../hooks/useLocation'
+import * as Location from 'expo-location'
+import useReverseGeocode from '../hooks/useReverseGeocode';
 
 type ProductDetailScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductDetail'>;
 
@@ -37,8 +39,6 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 		addToCart({ id: product._id, image: product.image, price: product.price, title: product.title })
 		setSnackbarVisible(true);
 	}
-	const { isGranted, location } = useLocation()
-	console.log(isGranted,location,)
 	return (
 		<View style={{ flex: 1 }}>
 			<Snackbar
