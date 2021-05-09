@@ -7,30 +7,41 @@ import CartDetails from '../../components/UI/cart/CartDetails';
 import CartItemTile from '../../components/UI/cart/CartItemTile';
 import { CartItem } from '../../models/CartItem';
 import { useCartStore } from '../../store/cart';
-import { centered } from '../../utils/commonStyles';
-import EmptyCartIcon from '../../icons/EmptyCartIcon';
+import SelectAddressBottomSheet from '../../components/UI/address/SelectAddressBottomSheet';
+import AddressItem from '../../components/UI/address/AddressItem';
+import { useAddressStore } from '../../store/address';
 import { useNavigation } from '@react-navigation/core';
 
-const CartScreen = () => {
+const OrderSummaryScreen = () => {
 	const navigation = useNavigation();
+	const [
+		bsVisible,
+		setBsVisible
+	] = useState(false);
+	const { preferredAddress } = useAddressStore();
 	const cartItemListRef: any = useRef<React.LegacyRef<FlatList<CartItem>> | undefined>(null);
 	const { cartItems, totalAmount, itemCount, clearCart } = useCartStore();
 	const handleViewCartDetails = () => {
 		cartItemListRef.current.scrollToEnd({ animated: true });
 	};
-	if (cartItems.length === 0) {
-		return (
-			<View style={centered}>
-				<EmptyCartIcon height={150} width={150} />
-				<Title style={styles.title}>Your cart is empty.</Title>
-			</View>
-		);
-	}
 	return (
 		<React.Fragment>
+			<SelectAddressBottomSheet visible={bsVisible} onBackdropPress={() => setBsVisible(false)} />
+			{
+				preferredAddress ? <AddressItem
+					address={preferredAddress}
+					ExtraComponent={
+						<Button mode="contained" onPress={() => setBsVisible(true)}>
+							add or change address{' '}
+						</Button>
+					}
+				/> :
+				<Button mode="contained" onPress={() => navigation.navigate('AddAddress')}>
+					add address
+				</Button>}
 			<View style={{ flex: 1 }}>
 				<View style={{ flex: 1 }}>
-					<Title style={{ alignSelf: 'center', marginVertical: 20, fontSize: 25 }}>Cart Items</Title>
+					<Title style={{ alignSelf: 'center', marginVertical: 20, fontSize: 25 }}>Order Items</Title>
 					<FlatList
 						ref={cartItemListRef}
 						keyExtractor={(item) => item._id}
@@ -41,7 +52,7 @@ const CartScreen = () => {
 									<View>
 										<CartItemTile cartItem={item} />
 										<CartDetails
-											title="Cart Details"
+											title="Price Details"
 											totalAmount={totalAmount()}
 											totalItems={itemCount()}
 										/>
@@ -50,15 +61,6 @@ const CartScreen = () => {
 							}
 							return <CartItemTile cartItem={item} />;
 						}}
-					/>
-					<FAB
-						style={[
-							styles.fab,
-							{ backgroundColor: MuiColors.red600 }
-						]}
-						icon="cart-off"
-						color={MuiColors.white}
-						onPress={clearCart}
 					/>
 				</View>
 				{cartItems.length > 0 && (
@@ -69,16 +71,16 @@ const CartScreen = () => {
 								{totalAmount()}
 							</Title>
 							<Pressable onPress={handleViewCartDetails}>
-								<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View cart details</Text>
+								<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View price details</Text>
 							</Pressable>
 						</View>
 						<Button
 							mode="contained"
-							onPress={() => navigation.navigate('OrderSummary')}
+							onPress={() => navigation.navigate('Payment')}
 							style={{ alignSelf: 'center' }}
 							color={Colors.accent}
 						>
-							place order
+							continue
 						</Button>
 					</Surface>
 				)}
@@ -87,7 +89,7 @@ const CartScreen = () => {
 	);
 };
 
-export default CartScreen;
+export default OrderSummaryScreen;
 
 const styles = StyleSheet.create({
 	surface:

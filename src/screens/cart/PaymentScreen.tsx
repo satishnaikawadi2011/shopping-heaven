@@ -21,7 +21,7 @@ const initialValues = {
 	number: ''
 };
 
-const CheckoutScreen = () => {
+const PaymentScreen = () => {
 	const [
 		cardDetails,
 		setCardDetails
@@ -70,7 +70,7 @@ const CheckoutScreen = () => {
 	);
 };
 
-export default CheckoutScreen;
+export default PaymentScreen;
 
 const styles = StyleSheet.create({
 	container: {},

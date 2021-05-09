@@ -8,16 +8,17 @@ interface CartDetailsProps {
 	totalItems: number;
 	totalAmount: number;
 	taxes?: number;
+	title: string;
 }
 
-const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxes }) => {
+const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxes, title }) => {
 	const actualTax =
 		taxes ? taxes :
 		0;
 	return (
 		<Surface style={styles.surface}>
 			<View>
-				<Title>Cart Details</Title>
+				<Title>{title}</Title>
 			</View>
 			<AppDivider />
 			<View style={styles.subheading}>

@@ -8,34 +8,43 @@ import { Address } from '../../../models/Address';
 interface AddressItemProps {
 	address: Address;
 	TailingComponent?: any;
+	ExtraComponent?: any;
 }
 
-const AddressItem: React.FC<AddressItemProps> = ({ address, TailingComponent }) => {
-	const { building, city, fullName, country, phoneNumber, pincode, road, state, id } = address;
+const AddressItem: React.FC<AddressItemProps> = ({ address, TailingComponent, ExtraComponent }) => {
+	const { building, city, fullName, phoneNumber, pincode, road, state, id } = address;
 	const theme = useTheme();
 	return (
 		<Surface style={styles.surface}>
-			<View style={styles.firstContainer}>
-				<MaterialCommunityIcons style={styles.icon} name="city-variant" size={40} color={theme.colors.text} />
+			<View style={styles.parentContainer}>
+				<View style={styles.firstContainer}>
+					<MaterialCommunityIcons
+						style={styles.icon}
+						name="city-variant"
+						size={40}
+						color={theme.colors.text}
+					/>
+				</View>
+				<View style={styles.secondContainer}>
+					<View
+						style={[
+							styles.container
+						]}
+					>
+						<Title>{fullName}</Title>
+					</View>
+					<View style={styles.container}>
+						<Text style={styles.text}>
+							{building},{road},{city},{state} - {pincode}
+						</Text>
+					</View>
+					<View style={styles.container}>
+						<Text style={styles.text}>{phoneNumber}</Text>
+					</View>
+				</View>
+				<View style={styles.thirdContainer}>{TailingComponent}</View>
 			</View>
-			<View style={styles.secondContainer}>
-				<View
-					style={[
-						styles.container
-					]}
-				>
-					<Title>{fullName}</Title>
-				</View>
-				<View style={styles.container}>
-					<Text style={styles.text}>
-						{building},{road},{city},{state} - {pincode}
-					</Text>
-				</View>
-				<View style={styles.container}>
-					<Text style={styles.text}>{phoneNumber}</Text>
-				</View>
-			</View>
-			<View style={styles.thirdContainer}>{TailingComponent}</View>
+			{ExtraComponent}
 		</Surface>
 	);
 };
@@ -43,6 +52,11 @@ const AddressItem: React.FC<AddressItemProps> = ({ address, TailingComponent }) 
 export default AddressItem;
 
 const styles = StyleSheet.create({
+	parentContainer:
+		{
+			flexDirection: 'row',
+			alignItems: 'flex-start'
+		},
 	firstContainer:
 		{
 			width: '20%'
@@ -68,8 +82,6 @@ const styles = StyleSheet.create({
 
 			elevation: 4,
 			padding: 10,
-			flexDirection: 'row',
-			alignItems: 'flex-start',
 			width: DEVICE_WIDTH
 		},
 	container:
