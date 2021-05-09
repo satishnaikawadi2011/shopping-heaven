@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN, PUBLISHABLE_STRIPE_KEY } from '../../../constants';
+import { BACKEND_URL, DEVICE_WIDTH, INDIAN_RUPEE_SIGN, PUBLISHABLE_STRIPE_KEY } from '../../../constants';
 import AppErrorMessage from '../../components/UI/form/AppErrorMessage';
-import { Colors as MuiColors, RadioButton, Text, Title, Surface, Button } from 'react-native-paper';
+import { Colors as MuiColors, RadioButton, Text, Title, Surface, Button, useTheme } from 'react-native-paper';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import AppButton from '../../components/UI/app/Button';
-import { createTokenRequest, CreditCard } from '../../services/checkout';
+import { createTokenRequest, CreditCard, payRequest } from '../../services/checkout';
 import { PaymentMethodType } from '../../utils/types';
 import CartDetails from '../../components/UI/cart/CartDetails';
 import { useCartStore } from '../../store/cart';
@@ -13,6 +13,8 @@ import { Colors } from '../../../constants/colors';
 import AuthenticProductsIcon from '../../icons/AuthenticProductsIcon';
 import SecurePaymentIcon from '../../icons/SecurePaymentIcon';
 import EasyReturnsIcon from '../../icons/EasyReturnsIcon';
+import axios from 'axios';
+import { useAddressStore } from '../../store/address';
 
 interface CardDetails {
 	cvc: string;
@@ -29,7 +31,9 @@ const initialValues = {
 };
 
 const PaymentScreen = () => {
+	const theme = useTheme();
 	const { totalAmount, itemCount, cartItems } = useCartStore();
+	const { preferredAddress } = useAddressStore()
 	const [
 		paymentType,
 		setPaymentType
@@ -42,6 +46,10 @@ const PaymentScreen = () => {
 		error,
 		setError
 	] = useState<string>('Please fill up all card details correctly!!');
+	const [
+		loading,
+		setLoading
+	] = useState(false);
 	const handleChange = (form: any) => {
 		setError('');
 		if (Object.values(form.status).includes('incomplete')) {
@@ -56,6 +64,7 @@ const PaymentScreen = () => {
 		});
 	};
 	const handlePlaceOrderForCreditCard = async () => {
+		console.log('Handling');
 		const expiry = cardDetails.expiry.split('/');
 		const card: CreditCard = {
 			number: cardDetails.number,
@@ -64,9 +73,43 @@ const PaymentScreen = () => {
 			exp_month: expiry[0],
 			exp_year: expiry[1]
 		};
-		console.log(card);
+		// console.log(card);
+		setLoading(true);
+		const {data:order} = await axios.post(`${BACKEND_URL}/order/add`, {
+			orderItems: cartItems.map(crtItm => {
+				return {
+					title: crtItm.title,
+					image: crtItm.image,
+					price: crtItm.price,
+					qty: crtItm.quantity,
+					productId:crtItm._id
+				}
+			}),
+			address: {
+				fullName: preferredAddress?.fullName,
+				phoneNumber: preferredAddress?.phoneNumber,
+				pincode: preferredAddress?.pincode,
+				state: preferredAddress?.state,
+				country: preferredAddress?.country,
+				road: preferredAddress?.road,
+				building: preferredAddress?.building,
+				city: preferredAddress?.city
+			},
+			itemsPrice:totalAmount(),
+			shippingPrice:0,
+			taxPrice:0,
+			totalPrice:totalAmount(),
+			paymentMethod:'CreditCard',
+		}, { onUploadProgress: (progress: ProgressEvent) => console.log(progress.loaded / progress.total * 100) })
+		console.log(order)
+		try {
 		const info = await createTokenRequest(card);
-		console.log(info);
+		const { data } = await payRequest(info.id, card.name, totalAmount(),order._id, (progress) => console.log(progress));
+		} catch (error) {
+			console.log(error)
+			await axios.delete(`${BACKEND_URL}/order/${order._id}`)
+		}
+		setLoading(false);
 	};
 	const handlePlaceOrderForCOD = () => {};
 	return (
@@ -92,6 +135,18 @@ const PaymentScreen = () => {
 							validColor={MuiColors.green500}
 							onChange={handleChange}
 							requiresName
+							labelStyle={{
+								color:
+
+										theme.dark ? '#ffffff' :
+										'#000000'
+							}}
+							inputStyle={{
+								color:
+
+										theme.dark ? '#ffffff' :
+										'#000000'
+							}}
 							inputContainerStyle={styles.inputContainerStyle}
 						/>
 						<AppErrorMessage style={{ alignSelf: 'center' }} errorMessage={error} visible={error !== ''} />
@@ -130,7 +185,7 @@ const PaymentScreen = () => {
 							</Pressable> */}
 					</View>
 					<Button
-						disabled={error !== '' && paymentType === 'CreditCard'}
+						disabled={(error !== '' && paymentType === 'CreditCard') || loading}
 						mode="contained"
 						onPress={
 
@@ -140,7 +195,9 @@ const PaymentScreen = () => {
 						style={{ alignSelf: 'center' }}
 						color={Colors.accent}
 					>
-						place order
+						{
+							paymentType === 'COD' ? 'place order' :
+							'pay'}
 					</Button>
 				</Surface>
 			)}
