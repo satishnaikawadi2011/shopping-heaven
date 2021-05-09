@@ -5,9 +5,11 @@ import * as Yup from 'yup';
 import AppFormField from '../components/UI/form/AppFormField';
 import SubmitButton from '../components/UI/form/SubmitButton';
 import { useAddressStore } from '../store/address';
-import { Snackbar } from 'react-native-paper';
+import { RadioButton, Snackbar, Text, useTheme } from 'react-native-paper';
+import useLocation from '../hooks/useLocation';
+import { getAddressFromGeocode, getCurrentLocation } from '../utils/location';
 
-const initialValues = {
+const mannualAddressInitialValues = {
 	fullName: '',
 	phoneNumber: '',
 	pincode: '',
@@ -18,7 +20,17 @@ const initialValues = {
 	building: ''
 };
 
-const addressSchema = Yup.object({
+const cuurentLocationAddressInitialValues = {
+	fullName: '',
+	phoneNumber: ''
+};
+
+const currentLocationAddressSchema = Yup.object({
+	fullName: Yup.string().required(),
+	phoneNumber: Yup.string().required().length(10)
+});
+
+const mannualAddressSchema = Yup.object({
 	fullName: Yup.string().required(),
 	phoneNumber: Yup.string().required().length(10),
 	pincode: Yup.string().required().length(6),
@@ -30,12 +42,25 @@ const addressSchema = Yup.object({
 });
 
 const AddAddressScreen = (props: any) => {
+	const theme = useTheme();
+	const [
+		error,
+		setError
+	] = useState<string | null>(null);
+	const [
+		loading,
+		setLoading
+	] = useState(false);
+	const [
+		addressType,
+		setAddressType
+	] = useState<'mannual' | 'location'>('mannual');
 	const [
 		snackbarVisible,
 		setSnackbarVisible
 	] = useState(false);
 	const { addAddress } = useAddressStore();
-	const handleSubmit = (values: any, actions: any) => {
+	const handleMannualAddressSubmit = (values: any, actions: any) => {
 		const { building, city, country, fullName, phoneNumber, pincode, road, state } = values;
 		addAddress({
 			building,
@@ -51,93 +76,174 @@ const AddAddressScreen = (props: any) => {
 		actions.resetForm({});
 		setSnackbarVisible(true);
 	};
+	const handleCurrentLocationAddressSubmit = async (values: any, actions: any) => {
+		setError(null);
+		setLoading(true);
+		const { fullName, phoneNumber } = values;
+		const { error: locationError, location } = await getCurrentLocation();
+		if (locationError) {
+			setError(locationError);
+			setLoading(false);
+		}
+		else {
+			const { address, error: addressError } = await getAddressFromGeocode({
+				latitude: location!.latitude,
+				longitude: location!.longitude
+			});
+			setLoading(false);
+			if (addressError) {
+				setError(addressError);
+			} else {
+					addAddress({
+			building:address?.street,
+			city:address?.city,
+			country:address?.country,
+			fullName,
+			phoneNumber,
+			pincode:address?.postalCode,
+			road:address?.subregion,
+			state:address?.region,
+			id: new Date().toISOString()
+		});
+		actions.resetForm({});
+		setSnackbarVisible(true);	
+			}
+		}
+	};
 	return (
 		<View style={{ flex: 1 }}>
-			<Snackbar visible={snackbarVisible} onDismiss={() => setSnackbarVisible(false)} duration={3000}>
-				{'Added your address successfully'}
+			<Snackbar
+				visible={!!error || snackbarVisible}
+				onDismiss={() => setSnackbarVisible(false)}
+				duration={error?5000:3000}
+			>
+				{
+					error ? error :
+					'Added your address successfully'}
 			</Snackbar>
+			<View style={styles.radioContainer}>
+				<RadioButton.Group onValueChange={(newValue: any) => setAddressType(newValue)} value={addressType}>
+					<View style={styles.row}>
+						<RadioButton value="mannual" />
+						<Text>Add Address Mannualy</Text>
+					</View>
+					<View style={styles.row}>
+						<RadioButton value="location" />
+						<Text>Get Address From Current Location</Text>
+					</View>
+				</RadioButton.Group>
+			</View>
 			<ScrollView>
-				<AppForm initialValues={initialValues} validationSchema={addressSchema} onSubmit={handleSubmit}>
-					<AppFormField
-						name="fullName"
-						autoCapitalize="none"
-						autoCorrect={false}
-						placeholder="Full Name"
-						textContentType="name"
-						icon="rename-box"
-					/>
-					<AppFormField
-						name="phoneNumber"
-						autoCapitalize="none"
-						autoCorrect={false}
-						placeholder="Phone number"
-						textContentType="telephoneNumber"
-						keyboardType="numeric"
-						icon="cellphone"
-					/>
-					<View style={styles.inputRow}>
+				{
+					addressType === 'mannual' ? <AppForm
+						initialValues={mannualAddressInitialValues}
+						validationSchema={mannualAddressSchema}
+						onSubmit={handleMannualAddressSubmit}
+					>
 						<AppFormField
-							small
-							style={styles.smallInput}
-							name="pincode"
+							name="fullName"
 							autoCapitalize="none"
 							autoCorrect={false}
-							placeholder="Pincode"
-							textContentType="postalCode"
+							placeholder="Full Name"
+							textContentType="name"
+							icon="rename-box"
+						/>
+						<AppFormField
+							name="phoneNumber"
+							autoCapitalize="none"
+							autoCorrect={false}
+							placeholder="Phone number"
+							textContentType="telephoneNumber"
 							keyboardType="numeric"
-							icon="numeric"
+							icon="cellphone"
 						/>
+						<View style={styles.inputRow}>
+							<AppFormField
+								small
+								style={styles.smallInput}
+								name="pincode"
+								autoCapitalize="none"
+								autoCorrect={false}
+								placeholder="Pincode"
+								textContentType="postalCode"
+								keyboardType="numeric"
+								icon="numeric"
+							/>
+							<AppFormField
+								small
+								style={styles.smallInput}
+								name="country"
+								autoCapitalize="none"
+								autoCorrect={false}
+								placeholder="Country"
+								textContentType="countryName"
+								icon="home"
+							/>
+						</View>
+						<View style={styles.inputRow}>
+							<AppFormField
+								small
+								style={styles.smallInput}
+								name="state"
+								autoCapitalize="none"
+								autoCorrect={false}
+								placeholder="State"
+								textContentType="addressState"
+								icon="home"
+							/>
+							<AppFormField
+								small
+								style={styles.smallInput}
+								name="city"
+								autoCapitalize="none"
+								autoCorrect={false}
+								placeholder="City"
+								textContentType="addressCity"
+								icon="city"
+							/>
+						</View>
 						<AppFormField
-							small
-							style={styles.smallInput}
-							name="country"
+							name="building"
 							autoCapitalize="none"
 							autoCorrect={false}
-							placeholder="Country"
-							textContentType="countryName"
-							icon="home"
-						/>
-					</View>
-					<View style={styles.inputRow}>
-						<AppFormField
-							small
-							style={styles.smallInput}
-							name="state"
-							autoCapitalize="none"
-							autoCorrect={false}
-							placeholder="State"
-							textContentType="addressState"
-							icon="home"
+							placeholder="House No.,Building Name"
+							textContentType="streetAddressLine1"
+							icon="office-building"
 						/>
 						<AppFormField
-							small
-							style={styles.smallInput}
-							name="city"
+							name="road"
 							autoCapitalize="none"
 							autoCorrect={false}
-							placeholder="City"
-							textContentType="addressCity"
-							icon="city"
+							placeholder="Road name,Area,Colony"
+							textContentType="streetAddressLine2"
+							icon="road-variant"
 						/>
-					</View>
-					<AppFormField
-						name="building"
-						autoCapitalize="none"
-						autoCorrect={false}
-						placeholder="House No.,Building Name"
-						textContentType="streetAddressLine1"
-						icon="office-building"
-					/>
-					<AppFormField
-						name="road"
-						autoCapitalize="none"
-						autoCorrect={false}
-						placeholder="Road name,Area,Colony"
-						textContentType="streetAddressLine2"
-						icon="road-variant"
-					/>
-					<SubmitButton title={'save address'} />
-				</AppForm>
+						<SubmitButton title={'save address'} />
+					</AppForm> :
+					<AppForm
+						initialValues={cuurentLocationAddressInitialValues}
+						validationSchema={currentLocationAddressSchema}
+						onSubmit={handleCurrentLocationAddressSubmit}
+					>
+						<AppFormField
+							name="fullName"
+							autoCapitalize="none"
+							autoCorrect={false}
+							placeholder="Full Name"
+							textContentType="name"
+							icon="rename-box"
+						/>
+						<AppFormField
+							name="phoneNumber"
+							autoCapitalize="none"
+							autoCorrect={false}
+							placeholder="Phone number"
+							textContentType="telephoneNumber"
+							keyboardType="numeric"
+							icon="cellphone"
+						/>
+						<SubmitButton loading={loading} title="add current location address" />
+					</AppForm>}
 			</ScrollView>
 		</View>
 	);
@@ -154,5 +260,15 @@ const styles = StyleSheet.create({
 	smallInput:
 		{
 			width: '45%'
+		},
+	row:
+		{
+			flexDirection: 'row',
+			alignItems: 'center'
+		},
+	radioContainer:
+		{
+			padding: 10,
+			marginVertical: 20
 		}
 });

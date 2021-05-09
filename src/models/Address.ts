@@ -1,11 +1,11 @@
 export interface Address {
 	id: string;
-	fullName: string;
-	phoneNumber: string;
-	pincode: string;
-	state: string;
-	country: string;
-	city: string;
-	road: string;
-	building: string;
+	fullName?: string | null;
+	phoneNumber?: string | null;
+	pincode?: string | null;
+	state?: string | null;
+	country?: string | null;
+	city?: string | null;
+	road?: string | null;
+	building?: string | null;
 }

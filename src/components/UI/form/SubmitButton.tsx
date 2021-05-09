@@ -5,11 +5,13 @@ import AppButton from '../app/Button';
 
 interface SubmitButtonProps {
 	title: string;
+	loading?: boolean;
+	disabled?: boolean;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ title }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({ title, loading, disabled }) => {
 	const { handleSubmit } = useFormikContext();
-	return <AppButton title={title} onPress={handleSubmit} />;
+	return <AppButton disabled={disabled} loading={loading} title={title} onPress={handleSubmit} />;
 };
 
 export default SubmitButton;
