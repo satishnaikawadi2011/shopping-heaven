@@ -5,7 +5,7 @@ const useLocation = () => {
 	const [
 		location,
 		setLocation
-	] = useState<{ longitude: number; latitude: number }>();
+	] = useState<{ longitude: number; latitude: number } | null>();
 	const [
 		isGranted,
 		setIsGranted
@@ -14,12 +14,16 @@ const useLocation = () => {
 		try {
 			const { granted } = await Location.requestForegroundPermissionsAsync();
 			if (!granted) {
-				return { location, isGranted };
+				setIsGranted(false);
+				setLocation(null);
 			}
-			setIsGranted(true);
-			const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
-			setLocation({ longitude, latitude });
+			else {
+				setIsGranted(true);
+				const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
+				setLocation({ longitude, latitude });
+			}
 		} catch (error) {
+			setLocation(null);
 			console.log(error);
 		}
 	};

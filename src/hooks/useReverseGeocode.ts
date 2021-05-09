@@ -6,11 +6,11 @@ interface LocationType {
 	longitude: number;
 }
 
-const useReverseGeocode = (location: LocationType | undefined) => {
+const useReverseGeocode = (location: LocationType) => {
 	const [
 		address,
 		setAddress
-	] = useState<Location.LocationGeocodedAddress>();
+	] = useState<Location.LocationGeocodedAddress | null>();
 	const [
 		loading,
 		setLoading
