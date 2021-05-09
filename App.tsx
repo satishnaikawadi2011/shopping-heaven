@@ -15,7 +15,7 @@ import { getAddressDataFromAsyncStorage, useAddressStore } from './src/store/add
 import AppForm from './src/components/UI/form/AppForm';
 import * as Yup from 'yup';
 import SubmitButton from './src/components/UI/form/SubmitButton';
-import CheckoutScreen from './src/screens/cart/CheckoutScreen';
+import CheckoutScreen from './src/screens/cart/PaymentScreen';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/

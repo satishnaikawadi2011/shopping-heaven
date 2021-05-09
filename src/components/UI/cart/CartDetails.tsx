@@ -8,10 +8,11 @@ interface CartDetailsProps {
 	totalItems: number;
 	totalAmount: number;
 	taxes?: number;
+	shipping?: number;
 	title: string;
 }
 
-const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxes, title }) => {
+const CartDetails: React.FC<CartDetailsProps> = ({ shipping, totalAmount, totalItems, taxes, title }) => {
 	const actualTax =
 		taxes ? taxes :
 		0;
@@ -48,10 +49,18 @@ const CartDetails: React.FC<CartDetailsProps> = ({ totalAmount, totalItems, taxe
 					<Text>{taxes || 'Free'}</Text>
 				</View>
 			</View>
+			<View style={styles.subheading}>
+				<View>
+					<Text style={styles.bold}>Shipping Charges </Text>
+				</View>
+				<View>
+					<Text>{shipping || 'Free'}</Text>
+				</View>
+			</View>
 			<AppDivider />
 			<View style={styles.subheading}>
 				<View>
-					<Title>Total Amount</Title>
+					<Title>Total Payable Amount</Title>
 				</View>
 				<View>
 					<Title style={{ color: 'green' }}>

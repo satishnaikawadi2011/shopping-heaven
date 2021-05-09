@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Pressable } from 'react-native';
 import { Button, FAB, Surface, Text, Title, Colors as MuiColors } from 'react-native-paper';
-import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../constants';
+import { DEVICE_HEIGHT, DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../constants';
 import { Colors } from '../../../constants/colors';
 import CartDetails from '../../components/UI/cart/CartDetails';
 import CartItemTile from '../../components/UI/cart/CartItemTile';
@@ -119,6 +119,6 @@ const styles = StyleSheet.create({
 			position: 'absolute',
 			margin: 16,
 			right: 0,
-			bottom: 0
+			top: 0
 		}
 });
