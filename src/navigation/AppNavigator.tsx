@@ -6,7 +6,7 @@ import React from 'react';
 import { Product } from '../models/Product';
 import { screenOptions as ProductListScreenOptions } from '../screens/ProductListScreen';
 import { screenOptions as ProductDetailScreenOptions } from '../screens/ProductDetailScreen';
-import CartScreen from '../screens/CartScreen';
+import CartScreen from '../screens/cart/CartScreen';
 import HomeTabNavigator from './HomeTabs';
 
 export type ProductsStackParamList = {

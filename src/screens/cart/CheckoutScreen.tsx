@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { DEVICE_WIDTH, PUBLISHABLE_STRIPE_KEY } from '../../constants';
-import AppErrorMessage from '../components/UI/form/AppErrorMessage';
+import { DEVICE_WIDTH, PUBLISHABLE_STRIPE_KEY } from '../../../constants';
+import AppErrorMessage from '../../components/UI/form/AppErrorMessage';
 import { Colors as MuiColors } from 'react-native-paper';
 import { CreditCardInput } from 'react-native-credit-card-input';
-import AppButton from '../components/UI/app/Button';
-import { createTokenRequest, CreditCard } from '../services/checkout';
+import AppButton from '../../components/UI/app/Button';
+import { createTokenRequest, CreditCard } from '../../services/checkout';
 
 interface CardDetails {
 	cvc: string;

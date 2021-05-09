@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Pressable } from 'react-native';
 import { Button, FAB, Surface, Text, Title, Colors as MuiColors } from 'react-native-paper';
-import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../constants';
-import { Colors } from '../../constants/colors';
-import CartDetails from '../components/UI/cart/CartDetails';
-import CartItemTile from '../components/UI/cart/CartItemTile';
-import { CartItem } from '../models/CartItem';
-import { useCartStore } from '../store/cart';
-import SelectAddressBottomSheet from '../components/UI/address/SelectAddressBottomSheet';
-import { centered } from '../utils/commonStyles';
-import EmptyCartIcon from '../icons/EmptyCartIcon';
+import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../constants';
+import { Colors } from '../../../constants/colors';
+import CartDetails from '../../components/UI/cart/CartDetails';
+import CartItemTile from '../../components/UI/cart/CartItemTile';
+import { CartItem } from '../../models/CartItem';
+import { useCartStore } from '../../store/cart';
+import SelectAddressBottomSheet from '../../components/UI/address/SelectAddressBottomSheet';
+import { centered } from '../../utils/commonStyles';
+import EmptyCartIcon from '../../icons/EmptyCartIcon';
 
 const CartScreen = () => {
 	const [
