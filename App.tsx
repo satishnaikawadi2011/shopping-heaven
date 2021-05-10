@@ -7,16 +7,8 @@ import AppNavigationContainer from './src/navigation/AppNavigationContainer';
 import { getThemeDataFromAsyncStorage, useThemeStore } from './src/store/theme';
 import { CustomDarkTheme, CustomDefaultTheme } from './src/theme/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
-import AppTextInput from './src/components/UI/app/AppTextInput';
-import { centered } from './src/utils/commonStyles';
 import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
-import AddressItem from './src/components/UI/address/AddressItem';
 import { getAddressDataFromAsyncStorage, useAddressStore } from './src/store/address';
-import AppForm from './src/components/UI/form/AppForm';
-import * as Yup from 'yup';
-import SubmitButton from './src/components/UI/form/SubmitButton';
-import CheckoutScreen from './src/screens/cart/PaymentScreen';
-import OrderItemCard from './src/components/UI/cart/OrderItemCard';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/

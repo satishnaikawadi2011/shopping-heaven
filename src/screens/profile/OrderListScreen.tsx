@@ -1,69 +1,120 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Button, Text } from 'react-native-paper';
+import ordersApi from '../../api/orders';
 import OrderItemCard from '../../components/UI/cart/OrderItemCard';
-
-const order = {
-	_id: '6098d3b0cc67bc000421f2ed',
-	createdAt: '2021-05-10T06:33:20.588Z',
-	isDelivered: false,
-	isPaid: true,
-	itemsPrice: 2350,
-	orderItems:
-		[
-			{
-				_id: '6098d3b0cc67bc000421f2ee',
-				image: '/uploads/image-1620233318858.jpg',
-				price: 250,
-				productId: '6092cc4ab5bbf60004f85e08',
-				qty: 3,
-				title: 'Shoes'
-			},
-			{
-				_id: '6098d3b0cc67bc000421f2ef',
-				image: '/uploads/sample-product.jpg',
-				price: 800,
-				productId: '5fe24c90d64f460450722747',
-				qty: 2,
-				title: 'Sample Product'
-			}
-		],
-	paidAt: '2021-05-10T06:33:24.810Z',
-	paymentMethod: 'CreditCard',
-	paymentResult:
-		{
-			amount: 2350,
-			created: 1620628403,
-			currency: 'inr',
-			id: 'ch_1IpSgBSJpyqyuhlnxpnqVkr6',
-			receipt_url:
-				'https://pay.stripe.com/receipts/acct_1IolX5SJpyqyuhln/ch_1IpSgBSJpyqyuhlnxpnqVkr6/rcpt_JSNRggEWWtmKy0Wbtr5Vux3f8AACGS5'
-		},
-	shippingAddress:
-		{
-			building: 'Amphitheatre Parkway',
-			city: 'Mountain View',
-			country: 'United States',
-			fullName: 'Satish Naikawadi',
-			phoneNumber: '8975179022',
-			pincode: '94043',
-			road: 'Santa Clara County',
-			state: 'California'
-		},
-	shippingPrice: 0,
-	taxPrice: 0,
-	totalPrice: 2350,
-	updatedAt: '2021-05-10T06:33:24.820Z',
-	user: '5fdf5fcfe0ca7c552cd13529'
-};
+import { Order } from '../../models/Order';
+import { useAuthStore } from '../../store/auth';
+import { useOrderStore } from '../../store/orders';
+import { centered } from '../../utils/commonStyles';
+import ErrorScreen from '../ErrorScreen';
 
 const OrderListScreen = () => {
+	const { token } = useAuthStore();
+	const [
+		loading,
+		setLoading
+	] = useState(false);
+	const [
+		error,
+		setError
+	] = useState(false);
+	const { orders, setOrders } = useOrderStore();
+	useEffect(() => {
+		loadOrders();
+	}, []);
+	const loadOrders = async () => {
+		setLoading(true);
+		const response = await ordersApi.getOrdersRelatedToUser(token);
+		setLoading(false);
+		if (!response.ok) {
+			return setError(true);
+		}
+		setError(false);
+		const fetchedOrders = transformOrders(response.data as any);
+		setOrders(fetchedOrders);
+	};
+	if (error) {
+		return (
+			<ErrorScreen
+				errorMessage={'Could not fetch orders!!'}
+				ButtonComponent={
+					<Button onPress={loadOrders} mode="contained">
+						Retry
+					</Button>
+				}
+				icon="alert"
+			/>
+		);
+	}
+	if (loading) {
+		return (
+			<View style={centered}>
+				<ActivityIndicator size="large" />
+			</View>
+		);
+	}
 	return (
-		<View style={{ flex: 1, justifyContent: 'center' }}>
-			<OrderItemCard order={order} />
+		<View style={styles.container}>
+			<FlatList
+				data={orders}
+				keyExtractor={(item) => item._id}
+				renderItem={({ item }) => {
+					return <OrderItemCard order={item} />;
+				}}
+			/>
 		</View>
 	);
 };
 
 export default OrderListScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container:
+		{
+			flex: 1
+		}
+});
+
+const transformOrders = (orders: any[]): Order[] => {
+	const transformedOrders: Order[] = orders.map((order) => {
+		const { building, city, country, fullName, phoneNumber, road, state, postalCode } = order.shippingAddress;
+		const { amount, created, currency, id, receipt_url } = order.paymentResult;
+		return {
+			_id: order._id,
+			createdAt: order.createdAt,
+			isDelivered: order.isDelivered,
+			isPaid: order.isPaid,
+			itemsPrice: order.itemsPrice,
+			orderItems: order.orderItems,
+			paymentMethod: order.paymentMethod,
+			shippingAddress:
+				{
+					building,
+					city,
+					country,
+					fullName,
+					phoneNumber,
+					road,
+					state,
+					pincode: postalCode
+				},
+			shippingPrice: order.shippingPrice,
+			taxPrice: order.taxPrice,
+			totalPrice: order.totalPrice,
+			updatedAt: order.updatedAt,
+			user: order.user,
+			deliveredAt: order.deliveredAt,
+			paidAt: order.paidAt,
+			paymentResult:
+				{
+					amount,
+					created,
+					currency,
+					id,
+					receipt_url
+				}
+		};
+	});
+	return transformedOrders;
+};
