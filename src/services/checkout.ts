@@ -14,18 +14,6 @@ export interface CreditCard {
 
 export const createTokenRequest = (card: CreditCard) => stripe.createToken({ card });
 
-export const payRequest = (
-	token: string,
-	name: string,
-	amount: number,
-	orderId: string,
-	onUploadProgress: (progress: any) => void
-) => {
-	return axios.post(
-		`${BACKEND_URL}/order/${orderId}/pay`,
-		{ token, name, amount },
-		{
-			onUploadProgress: (progress: ProgressEvent) => onUploadProgress(progress.loaded / progress.total * 100)
-		}
-	);
+export const payRequest = (token: string, name: string, amount: number, orderId: string) => {
+	return axios.post(`${BACKEND_URL}/order/${orderId}/pay`, { token, name, amount });
 };

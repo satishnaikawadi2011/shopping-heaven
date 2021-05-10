@@ -75,14 +75,14 @@ const PaymentScreen = () => {
 		};
 		// console.log(card);
 		setLoading(true);
-		const {data:order} = await axios.post(`${BACKEND_URL}/order/add`, {
+		const { data: order } = await axios.post(`${BACKEND_URL}/order/add`, {
 			orderItems: cartItems.map(crtItm => {
 				return {
 					title: crtItm.title,
 					image: crtItm.image,
 					price: crtItm.price,
 					qty: crtItm.quantity,
-					productId:crtItm._id
+					productId: crtItm._id
 				}
 			}),
 			address: {
@@ -95,16 +95,17 @@ const PaymentScreen = () => {
 				building: preferredAddress?.building,
 				city: preferredAddress?.city
 			},
-			itemsPrice:totalAmount(),
-			shippingPrice:0,
-			taxPrice:0,
-			totalPrice:totalAmount(),
-			paymentMethod:'CreditCard',
-		}, { onUploadProgress: (progress: ProgressEvent) => console.log(progress.loaded / progress.total * 100) })
-		console.log(order)
+			itemsPrice: totalAmount(),
+			shippingPrice: 0,
+			taxPrice: 0,
+			totalPrice: totalAmount(),
+			paymentMethod: 'CreditCard',
+		})
+		// console.log(order)
 		try {
 		const info = await createTokenRequest(card);
-		const { data } = await payRequest(info.id, card.name, totalAmount(),order._id, (progress) => console.log(progress));
+			const updatedOrder = await payRequest(info.id, card.name, totalAmount(), order._id);
+			// console.log(updatedOrder)
 		} catch (error) {
 			console.log(error)
 			await axios.delete(`${BACKEND_URL}/order/${order._id}`)

@@ -15,9 +15,9 @@ type AuthStore = {
 	error: string | null;
 	setError: (error: string | null) => void;
 	setLoading: (loading: boolean) => void;
-	setToken: (token: string) => void;
-	setUser: (user: User) => void;
-	setExpiryDate: (expiryDate: Date) => void;
+	setToken: (token: string | null) => void;
+	setUser: (user: User | null) => void;
+	setExpiryDate: (expiryDate: Date | null) => void;
 	login: (username: string, password: string) => void;
 };
 
@@ -27,16 +27,18 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 	user: null,
 	loading: false,
 	error: null,
-	setError: (error: string | null) => set((state) => ({ ...state, error })),
-	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
-	setToken: (token: string) => set((state) => ({ ...state, token })),
-	setUser: (user: User) => set((state) => ({ ...state, user })),
-	setExpiryDate: (expiryDate: Date) => set((state) => ({ ...state, expiryDate })),
+	setError: (error) => set((state) => ({ ...state, error })),
+	setLoading: (loading) => set((state) => ({ ...state, loading })),
+	setToken: (token) => set((state) => ({ ...state, token })),
+	setUser: (user) => set((state) => ({ ...state, user })),
+	setExpiryDate: (expiryDate) => set((state) => ({ ...state, expiryDate })),
 	login:
 		async (username: string, password: string) => {
 			try {
 				get().setLoading(true);
-				const res = await axios.post(`${BACKEND_URL}/user/login`, { username, password }, {});
+				// console.log('Before');
+				const res = await axios.post(`${BACKEND_URL}/user/login`, { username, password });
+				// console.log('After', res);
 				get().setLoading(false);
 				const decodedToken: any = jwtDecode(res.data.token);
 				const expiryDate = new Date(decodedToken.exp * 1000);
@@ -81,6 +83,11 @@ const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
 			expiryDate: expiryDate.toISOString()
 		})
 	);
+};
+
+export const removeFromAsyncStorage = () => {
+	AsyncStorage.removeItem('user');
+	AsyncStorage.removeItem('tokenData');
 };
 
 export const getUserDataFromAsyncStorage = async () => {

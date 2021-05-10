@@ -1,20 +1,24 @@
+import { Address } from './Address';
+
 export interface Order {
-	shippingAddress: ShippingAddress;
-	status: boolean;
+	shippingAddress: Address;
 	_id: string;
-	orderItems?: (OrderItem)[] | null;
-	amount: number;
+	orderItems: OrderItem[];
+	isDelivered: boolean;
+	isPaid: boolean;
+	itemsPrice: number;
+	paidAt?: string;
+	deliveredAt?: string;
+	paymentMethod: string;
+	shippingPrice: number;
+	taxPrice: number;
+	totalPrice: number;
 	user: string;
 	createdAt: string;
 	updatedAt: string;
-	__v: number;
+	paymentResult?: PaymentResult;
 }
-export interface ShippingAddress {
-	address: string;
-	city: string;
-	postalCode: string;
-	country: string;
-}
+
 export interface OrderItem {
 	_id: string;
 	price: number;
@@ -22,4 +26,12 @@ export interface OrderItem {
 	title: string;
 	image: string;
 	qty: number;
+}
+
+export interface PaymentResult {
+	amount?: number;
+	created?: number;
+	currency?: string;
+	id?: string;
+	receipt_url?: string;
 }

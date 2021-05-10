@@ -6,7 +6,7 @@ import AppIcon from '../../components/UI/app/AppIcon';
 import AppListItem from '../../components/UI/app/AppListItem';
 import { Colors as MdColors, Switch, Text } from 'react-native-paper';
 import { useThemeStore } from '../../store/theme';
-import { useAuthStore } from '../../store/auth';
+import { removeFromAsyncStorage, useAuthStore } from '../../store/auth';
 import { getFocusedRouteNameFromRoute, RouteProp, useNavigation } from '@react-navigation/core';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
@@ -43,7 +43,7 @@ const navMenuItems = [
 const ProfileScreen = () => {
 	const navigation = useNavigation()
 	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
-	const {user} = useAuthStore()
+	const {user,setUser,setToken,setExpiryDate} = useAuthStore()
 	return (
 		<View style={{ flex: 1 }}>
 			<View style={styles.container}>
@@ -74,6 +74,12 @@ const ProfileScreen = () => {
 			<View style={styles.container}>
 				<AppListItem
 					title="Logout"
+					onPress={() => {
+						setExpiryDate(null);
+						setToken(null);
+						setUser(null);
+						removeFromAsyncStorage()
+					}}
 					ImageComponent={<AppIcon name="logout-variant" bgColor={MdColors.red500} />}
 				/>
 				<AppDivider />
