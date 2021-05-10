@@ -4,12 +4,13 @@ import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import ordersApi from '../../api/orders';
 import OrderItemCard from '../../components/UI/cart/OrderItemCard';
 import { Order } from '../../models/Order';
+import { ProfileStackNavProps } from '../../navigation/ProfileStackNavigator';
 import { useAuthStore } from '../../store/auth';
 import { useOrderStore } from '../../store/orders';
 import { centered } from '../../utils/commonStyles';
 import ErrorScreen from '../ErrorScreen';
 
-const OrderListScreen = () => {
+const OrderListScreen = ({ navigation }: ProfileStackNavProps<'Orders'>) => {
 	const { token } = useAuthStore();
 	const [
 		loading,
@@ -60,7 +61,12 @@ const OrderListScreen = () => {
 				data={orders}
 				keyExtractor={(item) => item._id}
 				renderItem={({ item }) => {
-					return <OrderItemCard order={item} />;
+					return (
+						<OrderItemCard
+							order={item}
+							onTrailingIconPress={() => navigation.navigate('OrderDetails', { orderId: item._id })}
+						/>
+					);
 				}}
 			/>
 		</View>

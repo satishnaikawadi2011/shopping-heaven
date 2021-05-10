@@ -8,9 +8,10 @@ import DoubleBlockButton from '../app/DoubleBlockButton';
 
 interface CartTItemileProps {
 	cartItem: CartItem;
+	noActions?: boolean;
 }
 
-const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem }) => {
+const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem, noActions }) => {
 	const { addToCart, removeFromCart } = useCartStore();
 	const { _id, image, price, quantity, title } = cartItem;
 	const handleAddMore = () => {
@@ -40,12 +41,14 @@ const CartItemTile: React.FC<CartTItemileProps> = ({ cartItem }) => {
 					</Subheading>
 				</View>
 			</View>
-			<View style={{ marginTop: 15 }}>
-				<DoubleBlockButton
-					leftButtonProps={{ label: 'add more', icon: 'plus', onPress: handleAddMore }}
-					rightButtonProps={{ label: 'remove', onPress: handleRemove, icon: 'delete-outline' }}
-				/>
-			</View>
+			{!noActions && (
+				<View style={{ marginTop: 15 }}>
+					<DoubleBlockButton
+						leftButtonProps={{ label: 'add more', icon: 'plus', onPress: handleAddMore }}
+						rightButtonProps={{ label: 'remove', onPress: handleRemove, icon: 'delete-outline' }}
+					/>
+				</View>
+			)}
 		</Surface>
 	);
 };

@@ -8,9 +8,10 @@ import AppIcon from '../app/AppIcon';
 
 interface OrderItemProps {
 	order: Order;
+	onTrailingIconPress?: () => void;
 }
 
-const OrderItemCard: React.FC<OrderItemProps> = ({ order }) => {
+const OrderItemCard: React.FC<OrderItemProps> = ({ order, onTrailingIconPress }) => {
 	const theme = useTheme();
 	const orderedDate = new Date(order.createdAt);
 	const arr = orderedDate.toDateString().split(' ');
@@ -109,6 +110,7 @@ const OrderItemCard: React.FC<OrderItemProps> = ({ order }) => {
 					</View>
 				</View>
 				<MaterialCommunityIcons
+					onPress={onTrailingIconPress}
 					style={{ alignSelf: 'center' }}
 					name="chevron-right"
 					size={40}
