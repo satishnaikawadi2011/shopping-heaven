@@ -62,8 +62,8 @@ const ProfileScreen = () => {
 						return (
 							<AppListItem
 								title={item.title}
-								onPress={() => navigation.navigate(item.targetScreen)}
-								trailingIcon='greater-than'
+								onTrailingIconPress={() => navigation.navigate(item.targetScreen)}
+								trailingIcon='chevron-right'
 								ImageComponent={<AppIcon name={item.icon.name} bgColor={item.icon.backgroundColor}  
 							/>}
 							/>

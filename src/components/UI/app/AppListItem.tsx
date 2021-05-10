@@ -11,9 +11,18 @@ interface ListItemProps {
 	ImageComponent?: any;
 	trailingIcon?: any;
 	onPress?: () => void;
+	onTrailingIconPress?: () => void;
 }
 
-const AppListItem: React.FC<ListItemProps> = ({ trailingIcon, image, title, subTitle, ImageComponent, onPress }) => {
+const AppListItem: React.FC<ListItemProps> = ({
+	onTrailingIconPress,
+	trailingIcon,
+	image,
+	title,
+	subTitle,
+	ImageComponent,
+	onPress
+}) => {
 	const theme = useTheme();
 	const navTheme = useNavTheme();
 	return (
@@ -47,7 +56,14 @@ const AppListItem: React.FC<ListItemProps> = ({ trailingIcon, image, title, subT
 						)}
 					</View>
 				</View>
-				{trailingIcon && <MaterialCommunityIcons color={theme.colors.text} name={trailingIcon} />}
+				{trailingIcon && (
+					<MaterialCommunityIcons
+						onPress={onTrailingIconPress}
+						color={theme.colors.text}
+						size={25}
+						name={trailingIcon}
+					/>
+				)}
 			</Surface>
 		</TouchableWithoutFeedback>
 	);

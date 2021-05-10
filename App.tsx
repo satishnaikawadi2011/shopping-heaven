@@ -16,6 +16,7 @@ import AppForm from './src/components/UI/form/AppForm';
 import * as Yup from 'yup';
 import SubmitButton from './src/components/UI/form/SubmitButton';
 import CheckoutScreen from './src/screens/cart/PaymentScreen';
+import OrderItemCard from './src/components/UI/cart/OrderItemCard';
 
 export default function App() {
 	// https://eshopadminapp.netlify.app/
@@ -87,8 +88,8 @@ export default function App() {
 		<PaperProvider theme={theme}>
 			<AppNavigationContainer />
 			{/* <CheckoutScreen /> */}
-			{/* <View style={centered}>
-				<CreditCardFormField  />
+			{/* <View style={{ flex: 1, justifyContent: 'center' }}>
+				<OrderItemCard />
 			</View> */}
 		</PaperProvider>
 	);
