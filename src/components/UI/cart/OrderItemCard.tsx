@@ -3,66 +3,16 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View, FlatList, Animated } from 'react-native';
 import { Surface, Text, Colors as MuiColors, Subheading, Chip, Title, useTheme } from 'react-native-paper';
 import { DEVICE_WIDTH, IMAGE_URL_PREFIX, INDIAN_RUPEE_SIGN } from '../../../../constants';
+import { Order } from '../../../models/Order';
 import AppDivider from '../app/AppDivider';
 import AppIcon from '../app/AppIcon';
 import AppListItem from '../app/AppListItem';
 
-const order = {
-	__v: 0,
-	_id: '6098d3b0cc67bc000421f2ed',
-	createdAt: '2021-05-10T06:33:20.588Z',
-	isDelivered: false,
-	isPaid: true,
-	itemsPrice: 2350,
-	orderItems:
-		[
-			{
-				_id: '6098d3b0cc67bc000421f2ee',
-				image: '/uploads/image-1620233318858.jpg',
-				price: 250,
-				productId: '6092cc4ab5bbf60004f85e08',
-				qty: 3,
-				title: 'Shoes'
-			},
-			{
-				_id: '6098d3b0cc67bc000421f2ef',
-				image: '/uploads/sample-product.jpg',
-				price: 800,
-				productId: '5fe24c90d64f460450722747',
-				qty: 2,
-				title: 'Sample Product'
-			}
-		],
-	paidAt: '2021-05-10T06:33:24.810Z',
-	paymentMethod: 'CreditCard',
-	paymentResult:
-		{
-			amount: 2350,
-			created: 1620628403,
-			currency: 'inr',
-			id: 'ch_1IpSgBSJpyqyuhlnxpnqVkr6',
-			receipt_url:
-				'https://pay.stripe.com/receipts/acct_1IolX5SJpyqyuhln/ch_1IpSgBSJpyqyuhlnxpnqVkr6/rcpt_JSNRggEWWtmKy0Wbtr5Vux3f8AACGS5'
-		},
-	shippingAddress:
-		{
-			building: 'Amphitheatre Parkway',
-			city: 'Mountain View',
-			country: 'United States',
-			fullName: 'Satish Naikawadi',
-			phoneNumber: '8975179022',
-			postalCode: '94043',
-			road: 'Santa Clara County',
-			state: 'California'
-		},
-	shippingPrice: 0,
-	taxPrice: 0,
-	totalPrice: 2350,
-	updatedAt: '2021-05-10T06:33:24.820Z',
-	user: '5fdf5fcfe0ca7c552cd13529'
-};
+interface OrderItemProps {
+	order: Order;
+}
 
-const OrderItemCard = () => {
+const OrderItemCard: React.FC<OrderItemProps> = ({ order }) => {
 	const [
 		showItems,
 		setShowItems
