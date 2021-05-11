@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { BACKEND_URL, DEVICE_WIDTH, INDIAN_RUPEE_SIGN, PUBLISHABLE_STRIPE_KEY } from '../../../constants';
+import { DEVICE_WIDTH, INDIAN_RUPEE_SIGN } from '../../../constants';
 import AppErrorMessage from '../../components/UI/form/AppErrorMessage';
 import { Colors as MuiColors, RadioButton, Text, Title, Surface, Button, useTheme } from 'react-native-paper';
 import { CreditCardInput } from 'react-native-credit-card-input';
-import AppButton from '../../components/UI/app/Button';
-import { createTokenRequest, CreditCard, payRequest } from '../../services/checkout';
+import checkoutService, { CreditCard } from '../../services/checkout';
 import { PaymentMethodType } from '../../utils/types';
 import CartDetails from '../../components/UI/cart/CartDetails';
 import { useCartStore } from '../../store/cart';
@@ -13,8 +12,9 @@ import { Colors } from '../../../constants/colors';
 import AuthenticProductsIcon from '../../icons/AuthenticProductsIcon';
 import SecurePaymentIcon from '../../icons/SecurePaymentIcon';
 import EasyReturnsIcon from '../../icons/EasyReturnsIcon';
-import axios from 'axios';
 import { useAddressStore } from '../../store/address';
+import ordersApi from '../../api/orders';
+import ErrorScreen from '../ErrorScreen';
 
 interface CardDetails {
 	cvc: string;
@@ -32,8 +32,8 @@ const initialValues = {
 
 const PaymentScreen = () => {
 	const theme = useTheme();
-	const { totalAmount, itemCount, cartItems } = useCartStore();
-	const { preferredAddress } = useAddressStore()
+	const { totalAmount, itemCount, cartItems, clearCart } = useCartStore();
+	const { preferredAddress } = useAddressStore();
 	const [
 		paymentType,
 		setPaymentType
@@ -46,6 +46,10 @@ const PaymentScreen = () => {
 		error,
 		setError
 	] = useState<string>('Please fill up all card details correctly!!');
+	const [
+		apiError,
+		setApiError
+	] = useState(false);
 	const [
 		loading,
 		setLoading
@@ -64,7 +68,6 @@ const PaymentScreen = () => {
 		});
 	};
 	const handlePlaceOrderForCreditCard = async () => {
-		console.log('Handling');
 		const expiry = cardDetails.expiry.split('/');
 		const card: CreditCard = {
 			number: cardDetails.number,
@@ -75,44 +78,45 @@ const PaymentScreen = () => {
 		};
 		// console.log(card);
 		setLoading(true);
-		const { data: order } = await axios.post(`${BACKEND_URL}/order/add`, {
-			orderItems: cartItems.map(crtItm => {
-				return {
-					title: crtItm.title,
-					image: crtItm.image,
-					price: crtItm.price,
-					qty: crtItm.quantity,
-					productId: crtItm._id
-				}
-			}),
-			address: {
-				fullName: preferredAddress?.fullName,
-				phoneNumber: preferredAddress?.phoneNumber,
-				pincode: preferredAddress?.pincode,
-				state: preferredAddress?.state,
-				country: preferredAddress?.country,
-				road: preferredAddress?.road,
-				building: preferredAddress?.building,
-				city: preferredAddress?.city
-			},
-			itemsPrice: totalAmount(),
-			shippingPrice: 0,
-			taxPrice: 0,
-			totalPrice: totalAmount(),
-			paymentMethod: 'CreditCard',
-		})
-		// console.log(order)
+		const orderRes = await ordersApi.addOrder(
+			cartItems,
+			preferredAddress as any,
+			totalAmount(),
+			totalAmount(),
+			0,
+			0,
+			paymentType
+		);
+		if (!orderRes.ok) return setApiError(true);
 		try {
-		const info = await createTokenRequest(card);
-			const updatedOrder = await payRequest(info.id, card.name, totalAmount(), order._id);
-			// console.log(updatedOrder)
+			const addOrderData = orderRes.data as any;
+			const info = await checkoutService.createTokenRequest(card);
+			await checkoutService.payRequest(info.id, card.name, totalAmount(), addOrderData._id);
 		} catch (error) {
-			console.log(error)
-			await axios.delete(`${BACKEND_URL}/order/${order._id}`)
+			const addOrderData = orderRes.data as any;
+			console.log(error);
+			ordersApi.deleteOrder(addOrderData._id);
 		}
 		setLoading(false);
 	};
-	const handlePlaceOrderForCOD = () => {};
+	const handlePlaceOrderForCOD = async () => {
+		setLoading(true);
+		const orderRes = await ordersApi.addOrder(
+			cartItems,
+			preferredAddress as any,
+			totalAmount(),
+			totalAmount(),
+			0,
+			0,
+			paymentType
+		);
+		if (!orderRes.ok) return setApiError(true);
+
+		setLoading(false);
+	};
+	if (apiError) {
+		return <ErrorScreen errorMessage="Could not complete your payment request,please try again." icon="alert" />;
+	}
 	return (
 		<View style={styles.container}>
 			<ScrollView>
@@ -181,9 +185,6 @@ const PaymentScreen = () => {
 							{INDIAN_RUPEE_SIGN}
 							{totalAmount()}
 						</Title>
-						{/* <Pressable onPress={handleViewCartDetails}>
-								<Text style={{ color: Colors.primary, fontWeight: 'bold' }}>View price details</Text>
-							</Pressable> */}
 					</View>
 					<Button
 						disabled={(error !== '' && paymentType === 'CreditCard') || loading}

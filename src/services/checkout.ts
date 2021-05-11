@@ -1,6 +1,6 @@
 import createStripe from 'stripe-client';
-import { BACKEND_URL, PUBLISHABLE_STRIPE_KEY } from '../../constants';
-import axios from 'axios';
+import { PUBLISHABLE_STRIPE_KEY } from '../../constants';
+import client from '../api/client';
 
 const stripe = createStripe(PUBLISHABLE_STRIPE_KEY);
 
@@ -12,8 +12,13 @@ export interface CreditCard {
 	number: string;
 }
 
-export const createTokenRequest = (card: CreditCard) => stripe.createToken({ card });
+const createTokenRequest = (card: CreditCard) => stripe.createToken({ card });
 
-export const payRequest = (token: string, name: string, amount: number, orderId: string) => {
-	return axios.post(`${BACKEND_URL}/order/${orderId}/pay`, { token, name, amount });
+const payRequest = (token: string, name: string, amount: number, orderId: string) => {
+	return client.post(`/order/${orderId}/pay`, { token, name, amount });
+};
+
+export default {
+	createTokenRequest,
+	payRequest
 };

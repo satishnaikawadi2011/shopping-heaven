@@ -4,7 +4,7 @@ import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import ordersApi from '../../api/orders';
 import OrderItemCard from '../../components/UI/cart/OrderItemCard';
 import useApi from '../../hooks/useApi';
-import { Order } from '../../models/Order';
+import { Order, PaymentResult } from '../../models/Order';
 import { ProfileStackNavProps } from '../../navigation/ProfileStackNavigator';
 import { useAuthStore } from '../../store/auth';
 import { useOrderStore } from '../../store/orders';
@@ -79,7 +79,13 @@ const styles = StyleSheet.create({
 const transformOrders = (orders: any[]): Order[] => {
 	const transformedOrders: Order[] = orders.map((order) => {
 		const { building, city, country, fullName, phoneNumber, road, state, postalCode } = order.shippingAddress;
-		const { amount, created, currency, id, receipt_url } = order.paymentResult;
+		let paymentResult:PaymentResult | undefined;
+		if (order.paymentResult) {
+			const { amount, created, currency, id, receipt_url } = order?.paymentResult;
+			paymentResult = {
+				amount, created, currency, id, receipt_url
+			}
+		}
 		return {
 			_id: order._id,
 			createdAt: order.createdAt,
@@ -106,14 +112,7 @@ const transformOrders = (orders: any[]): Order[] => {
 			user: order.user,
 			deliveredAt: order.deliveredAt,
 			paidAt: order.paidAt,
-			paymentResult:
-				{
-					amount,
-					created,
-					currency,
-					id,
-					receipt_url
-				}
+			paymentResult
 		};
 	});
 	return transformedOrders;
