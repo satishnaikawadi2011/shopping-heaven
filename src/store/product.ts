@@ -13,7 +13,6 @@ type ProductStore = {
 	setLoading: (loading: boolean) => void;
 	setProducts: (products: Product[]) => void;
 	setCategories: (categories: Category[]) => void;
-	fetchAndSetProductsAndCategories: () => void;
 };
 
 export const useProductStore = create<ProductStore>((set, get) => ({
@@ -24,19 +23,5 @@ export const useProductStore = create<ProductStore>((set, get) => ({
 	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),
 	setProducts: (products: Product[]) => set((state) => ({ ...state, products })),
 	setCategories: (categories: Category[]) => set((state) => ({ ...state, categories })),
-	setSelectedCategory: (category: Category | null) => set((state) => ({ ...state, selectedCategory: category })),
-	fetchAndSetProductsAndCategories:
-		async () => {
-			try {
-				get().setLoading(true);
-				const productResponse = await axios.get(`${BACKEND_URL}/product`);
-				const categoryResponse = await axios.get(`${BACKEND_URL}/category`);
-				get().setLoading(false);
-				get().setProducts(productResponse.data);
-				get().setCategories(categoryResponse.data);
-			} catch (error) {
-				console.log(error.response.data);
-				get().setLoading(false);
-			}
-		}
+	setSelectedCategory: (category: Category | null) => set((state) => ({ ...state, selectedCategory: category }))
 }));

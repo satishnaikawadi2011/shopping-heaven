@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwtDecode from 'jwt-decode';
+import client from '../api/client';
 
 let timer: any;
 
@@ -74,7 +75,7 @@ const clearLogoutTimer = () => {
 };
 
 const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
-	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	// axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	AsyncStorage.setItem('user', JSON.stringify(user));
 	AsyncStorage.setItem(
 		'tokenData',
@@ -86,6 +87,7 @@ const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
 };
 
 export const removeFromAsyncStorage = () => {
+	client.setHeader('Authorization', '');
 	AsyncStorage.removeItem('user');
 	AsyncStorage.removeItem('tokenData');
 };

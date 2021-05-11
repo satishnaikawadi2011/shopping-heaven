@@ -34,7 +34,7 @@ const OrderListScreen = ({ navigation }: ProfileStackNavProps<'Orders'>) => {
 			<ErrorScreen
 				errorMessage={'Could not fetch orders!!'}
 				ButtonComponent={
-					<Button onPress={loadOrders} mode="contained">
+					<Button onPress={() => loadOrders(token)} mode="contained">
 						Retry
 					</Button>
 				}

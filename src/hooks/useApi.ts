@@ -19,7 +19,8 @@ const useApi = (apiFunc: Function) => {
 		const response = await apiFunc(...args);
 		setLoading(false);
 
-		if (!response.ok) {
+		if (!response?.ok) {
+			console.log(response)
 			return setError(true);
 		}
 
