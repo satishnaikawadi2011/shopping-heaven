@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, Text } from 'react-native-paper';
+import { useCartStore } from '../store/cart';
 
 interface Props {}
 
 const OrderSuccessScreen: React.FC<Props> = ({}) => {
+	const { clearCart } = useCartStore();
 	const navigation = useNavigation();
 	const theme = useTheme();
+	useEffect(() => {
+		clearCart();
+	}, []);
 	const [
 		isAnimationCompleted,
 		setIsAnimationCompleted

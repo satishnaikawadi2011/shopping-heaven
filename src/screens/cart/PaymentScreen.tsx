@@ -15,6 +15,8 @@ import EasyReturnsIcon from '../../icons/EasyReturnsIcon';
 import { useAddressStore } from '../../store/address';
 import ordersApi from '../../api/orders';
 import ErrorScreen from '../ErrorScreen';
+import { PaymentStackNavProps } from '../../navigation/payment/PaymentScreenNavigator';
+import AppActivityIndicator from '../../animations/AppActivityIndicator';
 
 interface CardDetails {
 	cvc: string;
@@ -30,7 +32,7 @@ const initialValues = {
 	number: ''
 };
 
-const PaymentScreen = () => {
+const PaymentScreen = ({ navigation }: PaymentStackNavProps<'PaymentHome'>) => {
 	const theme = useTheme();
 	const { totalAmount, itemCount, cartItems, clearCart } = useCartStore();
 	const { preferredAddress } = useAddressStore();
@@ -46,10 +48,6 @@ const PaymentScreen = () => {
 		error,
 		setError
 	] = useState<string>('Please fill up all card details correctly!!');
-	const [
-		apiError,
-		setApiError
-	] = useState(false);
 	const [
 		loading,
 		setLoading
@@ -76,7 +74,6 @@ const PaymentScreen = () => {
 			exp_month: expiry[0],
 			exp_year: expiry[1]
 		};
-		// console.log(card);
 		setLoading(true);
 		const orderRes = await ordersApi.addOrder(
 			cartItems,
@@ -87,12 +84,19 @@ const PaymentScreen = () => {
 			0,
 			paymentType
 		);
-		if (!orderRes.ok) return setApiError(true);
+		if (!orderRes.ok) {
+			setLoading(false);
+			navigation.navigate('PaymentFailure');
+			return;
+		}
 		try {
 			const addOrderData = orderRes.data as any;
 			const info = await checkoutService.createTokenRequest(card);
 			await checkoutService.payRequest(info.id, card.name, totalAmount(), addOrderData._id);
+			setLoading(false);
+			navigation.navigate('PaymentSuccess');
 		} catch (error) {
+			navigation.navigate('PaymentFailure');
 			const addOrderData = orderRes.data as any;
 			console.log(error);
 			ordersApi.deleteOrder(addOrderData._id);
@@ -110,12 +114,16 @@ const PaymentScreen = () => {
 			0,
 			paymentType
 		);
-		if (!orderRes.ok) return setApiError(true);
-
+		if (!orderRes.ok) {
+			setLoading(false);
+			navigation.navigate('PaymentFailure');
+			return;
+		}
 		setLoading(false);
+		navigation.navigate('PaymentSuccess');
 	};
-	if (apiError) {
-		return <ErrorScreen errorMessage="Could not complete your payment request,please try again." icon="alert" />;
+	if (loading) {
+		return <AppActivityIndicator visible={true} />;
 	}
 	return (
 		<View style={styles.container}>

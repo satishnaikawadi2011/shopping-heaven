@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { Button, Text } from 'react-native-paper';
 
 interface Props {}
@@ -17,7 +17,7 @@ const OrderFailScreen: React.FC<Props> = ({}) => {
 	if (isAnimationCompleted) {
 		return (
 			<View style={styles.container}>
-				<MaterialCommunityIcons name="checkbox-marked-circle" color={'green'} size={150} />
+				<Entypo name="circle-with-cross" color={'red'} size={150} />
 				<Text style={styles.message}>Something went wrong,could not place your order.</Text>
 				<Button mode="contained" onPress={() => navigation.navigate('Cart')}>
 					Go To Cart
@@ -43,12 +43,14 @@ const styles = StyleSheet.create({
 		{
 			flex: 1,
 			justifyContent: 'center',
-			alignItems: 'center'
+			alignItems: 'center',
+			marginHorizontal: 20
 		},
 	message:
 		{
 			fontWeight: 'bold',
 			fontSize: 20,
-			marginVertical: 10
+			marginVertical: 10,
+			textAlign: 'center'
 		}
 });

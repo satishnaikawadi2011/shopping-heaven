@@ -9,7 +9,7 @@ import { screenOptions as ProductDetailScreenOptions } from '../screens/ProductD
 import CartScreen from '../screens/cart/CartScreen';
 import HomeTabNavigator from './HomeTabs';
 import OrderSummaryScreen from '../screens/cart/OrderSummaryScreen';
-import PaymentScreen from '../screens/cart/PaymentScreen';
+import PaymentScreenNavigator from './payment/PaymentScreenNavigator';
 
 export type ProductsStackParamList = {
 	ProductList: undefined;
@@ -40,7 +40,11 @@ const AppNavigator = () => {
 				component={OrderSummaryScreen}
 				options={{ title: 'Order Summary' }}
 			/>
-			<ProductsStackNavigator.Screen name="Payment" component={PaymentScreen} options={{ title: 'Payments' }} />
+			<ProductsStackNavigator.Screen
+				name="Payment"
+				component={PaymentScreenNavigator}
+				options={{ title: 'Payments', headerLeft: () => null }}
+			/>
 		</ProductsStackNavigator.Navigator>
 	);
 };
