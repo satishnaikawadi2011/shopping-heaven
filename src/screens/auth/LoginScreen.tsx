@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, View, Alert } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { Colors } from '../../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppButton from '../../components/UI/app/Button';
-import { useAuthStore } from '../../store/auth';
+import { saveToAsyncStorage, useAuthStore } from '../../store/auth';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
 import useIsMounted from 'react-is-mounted-hook';
+import useApi from '../../hooks/useApi';
+import authApi from '../../api/auth';
+import jwtDecode from 'jwt-decode';
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -18,7 +21,8 @@ interface LoginScreenProps {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 	const isMounted = useIsMounted();
-	const { loading, login, error, setError } = useAuthStore();
+	const { setUser, setExpiryDate, setToken } = useAuthStore();
+	const { data, error, loading, request: loginUser } = useApi(authApi.loginUser);
 	const initialValues = {
 		username: '',
 		password: ''
@@ -27,18 +31,28 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 		username: Yup.string().required().min(4).max(16),
 		password: Yup.string().required().min(6).max(12)
 	});
+	useEffect(
+		() => {
+			if (data) {
+				let loginData = data as any;
+				const decodedToken: any = jwtDecode(loginData.token);
+				const expiryDate = new Date(decodedToken.exp * 1000);
+				setUser(loginData.user);
+				setExpiryDate(expiryDate);
+				setToken(loginData.token);
+				saveToAsyncStorage(loginData.user, expiryDate, loginData.token);
+			}
+		},
+		[
+			data
+		]
+	);
 	const submitHandler = async (values: any, actions: any) => {
-		await login(values.username, values.password);
+		await loginUser(values.username, values.password);
 		if (isMounted()) {
 			actions.resetForm();
 		}
 	};
-	if (error) {
-		Alert.alert('Error', error, [
-			{ text: 'Ok', style: 'cancel' }
-		]);
-		setError(null);
-	}
 	return (
 		<View style={{ flex: 1, justifyContent: 'space-evenly' }}>
 			<Image style={styles.logo} source={require('../../../assets/logo.png')} />
@@ -110,6 +124,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 									{props.errors.password}
 								</HelperText>
 							)}
+							{error && (
+								<HelperText style={{ textAlign: 'center' }} type="error" visible={error}>
+									{`Please check your credentials , either user with this username does not exists or have wrong credentials.`}
+								</HelperText>
+							)}
 							<AppButton
 								loading={loading}
 								title="sign in"
@@ -122,6 +141,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 							<AppButton
 								bgColor={Colors.accent}
 								title="register here"
+								disabled={loading}
 								onPress={() => {
 									navigation.navigate('Register');
 								}}

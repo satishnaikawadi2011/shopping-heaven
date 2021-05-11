@@ -1,8 +1,6 @@
 import create from 'zustand';
 import { Category } from '../models/Category';
 import { Product } from '../models/Product';
-import axios from 'axios';
-import { BACKEND_URL } from '../../constants';
 
 type ProductStore = {
 	products: Product[];
