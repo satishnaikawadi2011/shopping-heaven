@@ -19,6 +19,7 @@ import productsApi from '../api/products'
 import categoriesApi from '../api/categories'
 import { useAuthStore } from '../store/auth';
 import ErrorScreen from './ErrorScreen';
+import AppActivityIndicator from '../animations/AppActivityIndicator';
 
 type ProductListScreenNavigationProp = StackNavigationProp<ProductsStackParamList, 'ProductList'>;
 
@@ -50,9 +51,10 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 	const filteredProducts:any[] = selectedCategory ? products.filter(product => product.categoryId === selectedCategory?._id) : products;
 	if (categoriesRes.loading || productsRes.loading) {
 		return (
-			<View style={centered}>
-				<ActivityIndicator size="large" color={Colors.primary} />
-			</View>
+			// <View style={centered}>
+			// 	<ActivityIndicator size="large" color={Colors.primary} />
+			// </View>
+			<AppActivityIndicator visible={true}/>
 		);
 	}
 	if (categoriesRes.error || productsRes.error) {
