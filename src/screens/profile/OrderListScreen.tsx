@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import ordersApi from '../../api/orders';
 import OrderItemCard from '../../components/UI/cart/OrderItemCard';
+import useApi from '../../hooks/useApi';
 import { Order } from '../../models/Order';
 import { ProfileStackNavProps } from '../../navigation/ProfileStackNavigator';
 import { useAuthStore } from '../../store/auth';
@@ -12,29 +13,22 @@ import ErrorScreen from '../ErrorScreen';
 
 const OrderListScreen = ({ navigation }: ProfileStackNavProps<'Orders'>) => {
 	const { token } = useAuthStore();
-	const [
-		loading,
-		setLoading
-	] = useState(false);
-	const [
-		error,
-		setError
-	] = useState(false);
+	const { data, error, loading, request: loadOrders } = useApi(ordersApi.getOrdersRelatedToUser);
 	const { orders, setOrders } = useOrderStore();
 	useEffect(() => {
-		loadOrders();
+		loadOrders(token);
 	}, []);
-	const loadOrders = async () => {
-		setLoading(true);
-		const response = await ordersApi.getOrdersRelatedToUser(token);
-		setLoading(false);
-		if (!response.ok) {
-			return setError(true);
-		}
-		setError(false);
-		const fetchedOrders = transformOrders(response.data as any);
-		setOrders(fetchedOrders);
-	};
+	useEffect(
+		() => {
+			if (data) {
+				const fetchedOrders = transformOrders(data as any);
+				setOrders(fetchedOrders);
+			}
+		},
+		[
+			data
+		]
+	);
 	if (error) {
 		return (
 			<ErrorScreen
