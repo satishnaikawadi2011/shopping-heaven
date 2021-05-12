@@ -47,7 +47,7 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 		categoriesRes.request(token);
 		productsRes.request(token);
 	}
-	const filteredProducts:any[] = selectedCategory ? products.filter(product => product.categoryId === selectedCategory?._id) : products;
+	const filteredProducts:any[]|null = selectedCategory ? products!.filter(product => product.categoryId === selectedCategory?._id) : products;
 	if (categoriesRes.loading || productsRes.loading) {
 		return (
 			<AppActivityIndicator visible={true}/>
@@ -58,7 +58,7 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 	}
 	return (
 		<View style={{flex:1}}>
-			<CategoryList categories={categories} />
+			{categories && <CategoryList categories={categories} />}
 			{filteredProducts?.length === 0 ? <View style={[centered]}>
 				<SadEmojiIcon height={150} width={150}/>
 				<Title style={styles.title}>No products found !!</Title>
