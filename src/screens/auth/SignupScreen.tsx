@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StackNavigationProp } from '@react-navigation/stack';
+import jwtDecode from 'jwt-decode';
+import useIsMounted from 'react-is-mounted-hook';
 
 import { Colors } from '../../../constants/colors';
 import AppButton from '../../components/UI/app/Button';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
+import { useAuthStore } from '../../store/auth';
+import authApi from '../../api/auth';
+import useApi from '../../hooks/useApi';
 
 type RegisterScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Register'>;
 
@@ -16,6 +21,9 @@ interface RegisterScreenProps {
 }
 
 const SignupScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
+	const isMounted = useIsMounted();
+	const { authenticate } = useAuthStore();
+	const { data, error, loading, request: registerUser } = useApi(authApi.registerUser);
 	const initialValues = {
 		email: '',
 		password: '',
@@ -26,16 +34,24 @@ const SignupScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 		password: Yup.string().required().min(6).max(12),
 		username: Yup.string().required().min(4).max(16)
 	});
+	useEffect(
+		() => {
+			if (data) {
+				let registerData = data as any;
+				const decodedToken: any = jwtDecode(registerData.token);
+				const expiryDate = new Date(decodedToken.exp * 1000);
+				authenticate(registerData.user, expiryDate, registerData.token);
+			}
+		},
+		[
+			data
+		]
+	);
 	const submitHandler = async (values: any, actions: any) => {
-		// try {
-		console.log(values);
-		console.log(actions);
-		// 	await dispatch(loginUser(values));
-		// } catch (err) {
-		// 	console.log(errors);
-		// 	console.log(err);
-		// }
-		actions.resetForm();
+		await registerUser(values.username, values.email, values.password);
+		if (isMounted()) {
+			actions.resetForm();
+		}
 	};
 	return (
 		<View style={{ flex: 1, justifyContent: 'space-evenly' }}>
@@ -141,15 +157,24 @@ const SignupScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 									{props.errors.password}
 								</HelperText>
 							)}
+							{error && (
+								<HelperText style={{ textAlign: 'center' }} type="error" visible={error}>
+									{`User with this username or email already exists,please ensure that your username and email is unique.`}
+								</HelperText>
+							)}
 							<AppButton
+								loading={loading}
 								title="sign up"
-								// loading={loading}
-								onPress={// !loading ? props.handleSubmit :
-								() => {}}
+								onPress={
+
+										!loading ? props.handleSubmit :
+										() => {}
+								}
 							/>
 							<AppButton
 								bgColor={Colors.accent}
 								title="login here"
+								disabled={loading}
 								onPress={() => {
 									navigation.navigate('Login');
 								}}

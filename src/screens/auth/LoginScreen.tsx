@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { Image, StyleSheet, View, Alert } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import jwtDecode from 'jwt-decode';
+import useIsMounted from 'react-is-mounted-hook';
 
 import AppButton from '../../components/UI/app/Button';
 import { Colors } from '../../../constants/colors';
 import { useAuthStore } from '../../store/auth';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
-import useIsMounted from 'react-is-mounted-hook';
 import useApi from '../../hooks/useApi';
 import authApi from '../../api/auth';
 
