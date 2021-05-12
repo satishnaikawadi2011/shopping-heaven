@@ -48,7 +48,8 @@ export default function App() {
 	);
 	const launch = async () => {
 		if (isReady) {
-			await SplashScreen.hideAsync();
+			// await SplashScreen.hideAsync();
+			setTimeout(() => SplashScreen.hideAsync(), 2000);
 		}
 	};
 	const [
