@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { Colors } from '../../../constants/colors';
 import AppButton from '../../components/UI/app/Button';
@@ -12,6 +12,9 @@ interface WelcomeScreenProps {
 }
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
+	useEffect(() => {
+		console.log('on welcome');
+	}, []);
 	return (
 		<ImageBackground blurRadius={1} source={require('../../../assets/background.jpg')} style={styles.background}>
 			<Image source={require('../../../assets/logo.png')} style={styles.logo} />

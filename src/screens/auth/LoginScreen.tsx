@@ -40,6 +40,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 				setUser(loginData.user);
 				setExpiryDate(expiryDate);
 				setToken(loginData.token);
+				console.log(loginData);
 				saveToAsyncStorage(loginData.user, expiryDate, loginData.token);
 			}
 		},

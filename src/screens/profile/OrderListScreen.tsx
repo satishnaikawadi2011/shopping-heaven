@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button, Text } from 'react-native-paper';
+import {  Button, Text } from 'react-native-paper';
+import AppActivityIndicator from '../../animations/AppActivityIndicator';
 import ordersApi from '../../api/orders';
 import OrderItemCard from '../../components/UI/cart/OrderItemCard';
 import useApi from '../../hooks/useApi';
+import NoOrdersIcon from '../../icons/NoOrdersIcon';
 import { Order, PaymentResult } from '../../models/Order';
 import { ProfileStackNavProps } from '../../navigation/ProfileStackNavigator';
 import { useAuthStore } from '../../store/auth';
@@ -44,10 +46,14 @@ const OrderListScreen = ({ navigation }: ProfileStackNavProps<'Orders'>) => {
 	}
 	if (loading) {
 		return (
-			<View style={centered}>
-				<ActivityIndicator size="large" />
-			</View>
+			<AppActivityIndicator visible/>
 		);
+	}
+	if (orders?.length === 0) {
+		return <View style={centered}>
+			<NoOrdersIcon width={100} height={100} />
+			<Text style={{marginVertical:10}}>You have no orders !!</Text>
+		</View>
 	}
 	return (
 		<View style={styles.container}>

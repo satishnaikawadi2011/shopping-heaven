@@ -3,8 +3,6 @@ import create from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from '../api/client';
 
-let timer: any;
-
 type AuthStore = {
 	token: string | null;
 	user: User | null;
@@ -30,24 +28,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 	setUser: (user) => set((state) => ({ ...state, user })),
 	setExpiryDate: (expiryDate) => set((state) => ({ ...state, expiryDate }))
 }));
-
-const setLogoutTimer = (expirationTime: number) => {
-	// timer = setTimeout(() => {
-	// 	dispatch(logout());
-	// }, expirationTime);
-};
-
-export const logoutUser = () => {
-	clearLogoutTimer();
-	AsyncStorage.removeItem('user');
-	AsyncStorage.removeItem('tokenData');
-};
-
-const clearLogoutTimer = () => {
-	if (timer) {
-		clearTimeout(timer);
-	}
-};
 
 export const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
 	AsyncStorage.setItem('user', JSON.stringify(user));
@@ -76,6 +56,7 @@ export const getUserDataFromAsyncStorage = async () => {
 				user: JSON.parse(user)
 			};
 		}
+		// console.log('Soething is wrong');
 		return null;
 	} catch (error) {
 		console.log(error);

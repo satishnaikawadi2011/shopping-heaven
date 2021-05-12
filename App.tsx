@@ -1,70 +1,56 @@
 import { useFonts } from 'expo-font';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { getCartDataFromAsyncStorage, useCartStore } from './src/store/cart';
-import { getUserDataFromAsyncStorage, useAuthStore } from './src/store/auth';
+import { View } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
+
+import { useAuthStore } from './src/store/auth';
+import { useCartStore } from './src/store/cart';
 import AppNavigationContainer from './src/navigation/AppNavigationContainer';
-import { getThemeDataFromAsyncStorage, useThemeStore } from './src/store/theme';
+import { useThemeStore } from './src/store/theme';
 import { CustomDarkTheme, CustomDefaultTheme } from './src/theme/theme';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { getFavouritesDataFromAsyncStorage, useFavouritesStore } from './src/store/favourites';
-import { getAddressDataFromAsyncStorage, useAddressStore } from './src/store/address';
+import { useFavouritesStore } from './src/store/favourites';
+import { useAddressStore } from './src/store/address';
+import getDataFromAsyncStorageOnStart from './src/utils/getDataFromAsyncStorageOnStart';
 
 export default function App() {
-	// https://eshopadminapp.netlify.app/
-	const { setProductIds, setProducts } = useFavouritesStore();
-	const { isDarkTheme, setIsDarkTheme } = useThemeStore();
-	const { setAddresses, setPreferredAddress } = useAddressStore();
+	const [
+		isReady,
+		setIsReady
+	] = useState(false);
+	const { setProductIds: g, setProducts: f } = useFavouritesStore();
+	const { isDarkTheme, setIsDarkTheme: e } = useThemeStore();
+	const { setAddresses: h, setPreferredAddress: i } = useAddressStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
 		CustomDefaultTheme;
-	const { setCartItems } = useCartStore();
-	const { setExpiryDate, setUser, setToken } = useAuthStore();
-	let cartData: any;
-	let userData: any;
-	let themeData: any;
-	useEffect(() => {
-		const getCartData = async () => {
-			cartData = await getCartDataFromAsyncStorage();
-			if (cartData) {
-				setCartItems(cartData.cartItems);
-			}
-		};
-		const getUserData = async () => {
-			userData = await getUserDataFromAsyncStorage();
-			if (userData) {
-				setExpiryDate(userData.tokenData.expiryDate);
-				setUser(userData.user);
-				setToken(userData.tokenData.token);
-			}
-		};
-		const getThemeData = async () => {
-			themeData = await getThemeDataFromAsyncStorage();
-			if (themeData) {
-				setIsDarkTheme(themeData.isDarkTheme);
-			}
-		};
-		const getFavouritesData = async () => {
-			const favouritesData = await getFavouritesDataFromAsyncStorage();
-			if (favouritesData) {
-				setProducts(favouritesData.favourites);
-				setProductIds(favouritesData.ids);
-			}
-		};
-		const getAddressData = async () => {
-			const addressData = await getAddressDataFromAsyncStorage();
-			if (addressData) {
-				setAddresses(addressData.addresses);
-				setPreferredAddress(addressData.addresses[0]);
-			}
-		};
-		getFavouritesData();
-		getCartData();
-		getUserData();
-		getThemeData();
-		getFavouritesData();
-		getAddressData();
-	}, []);
+	const { setCartItems: a } = useCartStore();
+	const { setExpiryDate: b, setUser: c, setToken: d } = useAuthStore();
+
+	// async function prepare() {
+	// 	try {
+	// 		await SplashScreen.preventAutoHideAsync();
+	// 		await getDataFromAsyncStorageOnStart(a, b, c, d, e, f, g, h, i);
+	// 	} catch (e) {
+	// 		console.warn(e);
+	// 	} finally {
+	// 		setIsReady(true);
+	// 	}
+	// }
+	useEffect(
+		() => {
+			launch();
+		},
+		[
+			isReady
+		]
+	);
+	const launch = async () => {
+		if (isReady) {
+			await SplashScreen.hideAsync();
+		}
+	};
 	const [
 		loaded
 	] = useFonts({
@@ -73,26 +59,22 @@ export default function App() {
 		UbuntuMedium: require('./assets/fonts/Ubuntu-Medium.ttf'),
 		UbuntuBold: require('./assets/fonts/Ubuntu-Bold.ttf')
 	});
-	if (!loaded) {
-		return null;
+	if (!loaded || !isReady) {
+		return (
+			<AppLoading
+				autoHideSplash={false}
+				onError={(error) => console.log('Error from AppLoading', error)}
+				startAsync={() => getDataFromAsyncStorageOnStart(a, b, c, d, e, f, g, h, i)}
+				onFinish={() => setIsReady(true)}
+			/>
+		);
 	}
 	return (
 		<PaperProvider theme={theme}>
 			<AppNavigationContainer />
-			{/* <CheckoutScreen /> */}
 			{/* <View style={{ flex: 1, justifyContent: 'center' }}>
 				<OrderItemCard />
 			</View> */}
 		</PaperProvider>
 	);
 }
-
-const styles = StyleSheet.create({
-	container:
-		{
-			flex: 1,
-			backgroundColor: '#fff',
-			alignItems: 'center',
-			justifyContent: 'center'
-		}
-});

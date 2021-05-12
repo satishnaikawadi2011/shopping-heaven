@@ -3,8 +3,8 @@ import { Category } from '../models/Category';
 import { Product } from '../models/Product';
 
 type ProductStore = {
-	products: Product[];
-	categories: Category[];
+	products: Product[] | null;
+	categories: Category[] | null;
 	loading: boolean;
 	selectedCategory: Category | null;
 	setSelectedCategory: (category: Category | null) => void;
@@ -14,8 +14,8 @@ type ProductStore = {
 };
 
 export const useProductStore = create<ProductStore>((set, get) => ({
-	products: [],
-	categories: [],
+	products: null,
+	categories: null,
 	loading: false,
 	selectedCategory: null,
 	setLoading: (loading: boolean) => set((state) => ({ ...state, loading })),

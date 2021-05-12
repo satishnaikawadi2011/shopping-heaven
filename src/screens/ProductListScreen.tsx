@@ -2,19 +2,16 @@ import { getFocusedRouteNameFromRoute, RouteProp } from '@react-navigation/core'
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { FlatList,  StyleSheet, View } from 'react-native';
-import { ActivityIndicator,Button,Title } from 'react-native-paper';
-import { Colors } from '../../constants/colors';
-import AddButton from '../components/headerButtons/AddButton';
+import { Button,Title } from 'react-native-paper';
+
 import CartButton from '../components/headerButtons/CartButton';
 import CategoryList from '../components/UI/CategoryList';
 import ProductCard from '../components/UI/ProductCard';
 import useApi from '../hooks/useApi';
 import SadEmojiIcon from '../icons/SadEmojiIcon';
 import { ProductsStackParamList } from '../navigation/AppNavigator';
-import { useFavouritesStore } from '../store/favourites';
 import { useProductStore } from '../store/product';
 import { centered } from '../utils/commonStyles';
-import filterOddFromArray from '../utils/filterOddElements';
 import productsApi from '../api/products'
 import categoriesApi from '../api/categories'
 import { useAuthStore } from '../store/auth';
@@ -35,9 +32,11 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 	const {token} = useAuthStore()
 	const categoriesRes = useApi(categoriesApi.getCategories)
 	const productsRes = useApi(productsApi.getProducts)
-		useEffect(() => {;
-			request()
-		}, []);
+		useEffect(() => {
+			if (token) {
+				request()
+			}
+		}, [token]);
 	useEffect(() => {
 		if (productsRes.data && categoriesRes.data) {
 			setCategories(categoriesRes.data as any)
@@ -51,9 +50,6 @@ const ProductListScreen:React.FC<ProductLisScreenProps> = ({navigation,route}) =
 	const filteredProducts:any[] = selectedCategory ? products.filter(product => product.categoryId === selectedCategory?._id) : products;
 	if (categoriesRes.loading || productsRes.loading) {
 		return (
-			// <View style={centered}>
-			// 	<ActivityIndicator size="large" color={Colors.primary} />
-			// </View>
 			<AppActivityIndicator visible={true}/>
 		);
 	}
