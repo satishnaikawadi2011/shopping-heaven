@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/auth';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 import { CustomDarkTheme, CustomDefaultTheme } from '../theme/theme';
+import OfflineNotice from '../components/UI/OfflineNotice';
 
 const AppNavigationContainer = () => {
 	const { isDarkTheme } = useThemeStore();
@@ -14,11 +15,14 @@ const AppNavigationContainer = () => {
 			CustomDefaultTheme;
 	const isTokenExpired = expiryDate?.getTime() === new Date().getTime()
 	return (
-		<NavigationContainer theme={theme}>
+		<React.Fragment>
+			<OfflineNotice/>
+			<NavigationContainer theme={theme}>
 			{
 				user && !isTokenExpired ? <AppNavigator /> :
 				<AuthNavigator />}
 		</NavigationContainer>
+		</React.Fragment>
 	);
 };
 
