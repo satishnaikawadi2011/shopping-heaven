@@ -26,7 +26,7 @@ const getDataFromAsyncStorageOnStart = (
 		const userData = await getUserDataFromAsyncStorage();
 		if (userData) {
 			console.log('Getting data');
-			setExpiryDate(userData.tokenData.expiryDate);
+			setExpiryDate(new Date(userData.tokenData.expiryDate));
 			setUser(userData.user);
 			setToken(userData.tokenData.token);
 			client.setHeader('Authorization', `Bearer ${userData.tokenData.token}`);

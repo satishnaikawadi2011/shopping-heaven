@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
 import { Image, StyleSheet, View, Alert } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
-import { Colors } from '../../../constants/colors';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import AppButton from '../../components/UI/app/Button';
-import { saveToAsyncStorage, useAuthStore } from '../../store/auth';
 import { StackNavigationProp } from '@react-navigation/stack';
+import jwtDecode from 'jwt-decode';
+
+import AppButton from '../../components/UI/app/Button';
+import { Colors } from '../../../constants/colors';
+import { useAuthStore } from '../../store/auth';
 import { AuthStackParamList } from '../../navigation/AuthNavigator';
 import useIsMounted from 'react-is-mounted-hook';
 import useApi from '../../hooks/useApi';
 import authApi from '../../api/auth';
-import jwtDecode from 'jwt-decode';
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, 'Login'>;
 
@@ -21,7 +22,7 @@ interface LoginScreenProps {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 	const isMounted = useIsMounted();
-	const { setUser, setExpiryDate, setToken } = useAuthStore();
+	const { authenticate } = useAuthStore();
 	const { data, error, loading, request: loginUser } = useApi(authApi.loginUser);
 	const initialValues = {
 		username: '',
@@ -37,11 +38,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 				let loginData = data as any;
 				const decodedToken: any = jwtDecode(loginData.token);
 				const expiryDate = new Date(decodedToken.exp * 1000);
-				setUser(loginData.user);
-				setExpiryDate(expiryDate);
-				setToken(loginData.token);
-				console.log(loginData);
-				saveToAsyncStorage(loginData.user, expiryDate, loginData.token);
+				authenticate(loginData.user, expiryDate, loginData.token);
 			}
 		},
 		[

@@ -8,14 +8,15 @@ import { CustomDarkTheme, CustomDefaultTheme } from '../theme/theme';
 
 const AppNavigationContainer = () => {
 	const { isDarkTheme } = useThemeStore();
-	const { user } = useAuthStore();
+	const { user,expiryDate } = useAuthStore();
 	const theme =
 		isDarkTheme ? CustomDarkTheme :
-		CustomDefaultTheme;
+			CustomDefaultTheme;
+	const isTokenExpired = expiryDate?.getTime() === new Date().getTime()
 	return (
 		<NavigationContainer theme={theme}>
 			{
-				user ? <AppNavigator /> :
+				user && !isTokenExpired ? <AppNavigator /> :
 				<AuthNavigator />}
 		</NavigationContainer>
 	);

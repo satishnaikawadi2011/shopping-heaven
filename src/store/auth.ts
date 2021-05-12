@@ -11,6 +11,7 @@ type AuthStore = {
 	setUser: (user: User | null) => void;
 	setExpiryDate: (expiryDate: Date | null) => void;
 	logout: () => void;
+	authenticate: (user: User, expiryDate: Date, token: string) => void;
 };
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -24,6 +25,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 		() => {
 			set((state) => ({ ...state, token: null, user: null, expiryDate: null }));
 			removeAuthDataFromAsyncStorage();
+		},
+	authenticate:
+		(user, expiryDate, token) => {
+			set((state) => ({ ...state, user, expiryDate, token }));
+			saveToAsyncStorage(user, expiryDate, token);
 		}
 }));
 
@@ -54,7 +60,6 @@ export const getUserDataFromAsyncStorage = async () => {
 				user: JSON.parse(user)
 			};
 		}
-		// console.log('Soething is wrong');
 		return null;
 	} catch (error) {
 		console.log(error);
