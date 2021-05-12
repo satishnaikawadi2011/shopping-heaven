@@ -7,26 +7,24 @@ type AuthStore = {
 	token: string | null;
 	user: User | null;
 	expiryDate: Date | null;
-	loading: boolean;
-	error: string | null;
-	setError: (error: string | null) => void;
-	setLoading: (loading: boolean) => void;
 	setToken: (token: string | null) => void;
 	setUser: (user: User | null) => void;
 	setExpiryDate: (expiryDate: Date | null) => void;
+	logout: () => void;
 };
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
 	token: null,
 	expiryDate: null,
 	user: null,
-	loading: false,
-	error: null,
-	setError: (error) => set((state) => ({ ...state, error })),
-	setLoading: (loading) => set((state) => ({ ...state, loading })),
 	setToken: (token) => set((state) => ({ ...state, token })),
 	setUser: (user) => set((state) => ({ ...state, user })),
-	setExpiryDate: (expiryDate) => set((state) => ({ ...state, expiryDate }))
+	setExpiryDate: (expiryDate) => set((state) => ({ ...state, expiryDate })),
+	logout:
+		() => {
+			set((state) => ({ ...state, token: null, user: null, expiryDate: null }));
+			removeAuthDataFromAsyncStorage();
+		}
 }));
 
 export const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) => {
@@ -40,7 +38,7 @@ export const saveToAsyncStorage = (user: User, expiryDate: Date, token: string) 
 	);
 };
 
-export const removeFromAsyncStorage = () => {
+export const removeAuthDataFromAsyncStorage = () => {
 	client.setHeader('Authorization', '');
 	AsyncStorage.removeItem('user');
 	AsyncStorage.removeItem('tokenData');
