@@ -30,7 +30,7 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 	const product = route.params.product;
 	const { addToCart,isInCart} = useCartStore()
 	const {categories} = useProductStore()
-	const category = categories.find(category => category._id === product.categoryId)
+	const category = categories!.find(category => category._id === product.categoryId)
 	const inCart = isInCart(product._id);
 	const handleNavigateToCart = () => {
 		navigation.navigate('Cart');
@@ -71,7 +71,11 @@ const ProductDetailScreen: React.FC<ProductDetailScreenProps> = ({ navigation, r
 			</View>
 	<DoubleBlockButton
 				leftButtonProps={{ label: inCart ? 'go to cart':'add to cart', icon: 'cart-plus',onPress:inCart ?handleNavigateToCart :handleAddToCart }}
-				rightButtonProps={{ label: 'buy now', onPress: () => {} }}
+				rightButtonProps={{
+					label: 'buy now', onPress: () => {
+						handleAddToCart();
+						handleNavigateToCart();
+				} }} 
 			/>
 		</View>
 	);

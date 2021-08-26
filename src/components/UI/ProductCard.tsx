@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 	const { categoryId, price, title, image } = product;
 	const { categories } = useProductStore()
 	const { addToFavourites,removeFromFavourites,isFavourite} = useFavouritesStore();
-	const category = categories.find(cat => cat._id === categoryId)
+	const category = categories!.find(cat => cat._id === categoryId)
 	const navigation = useNavigation();
 	const width = Dimensions.get('window').width;
 	const isInFavourites = isFavourite(product._id)
