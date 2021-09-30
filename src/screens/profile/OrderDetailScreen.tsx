@@ -12,7 +12,7 @@ import formateDate from '../../utils/formateDate';
 const OrderDetailScreen = ({ navigation, route }: ProfileStackNavProps<'OrderDetails'>) => {
 	const { orderId } = route.params;
     const { orders } = useOrderStore();
-    const order = orders.find(order => order._id === orderId);
+    const order = orders!.find(order => order._id === orderId);
 	return (
 		<View style={styles.container}>
             <ScrollView>
