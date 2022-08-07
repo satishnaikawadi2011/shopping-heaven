@@ -6,7 +6,6 @@ import AppFormField from '../components/UI/form/AppFormField';
 import SubmitButton from '../components/UI/form/SubmitButton';
 import { useAddressStore } from '../store/address';
 import { RadioButton, Snackbar, Text, useTheme } from 'react-native-paper';
-import useLocation from '../hooks/useLocation';
 import { getAddressFromGeocode, getCurrentLocation } from '../utils/location';
 
 const mannualAddressInitialValues = {

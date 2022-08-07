@@ -1,6 +1,5 @@
 import { useFonts } from 'expo-font';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import * as SplashScreen from 'expo-splash-screen';
 

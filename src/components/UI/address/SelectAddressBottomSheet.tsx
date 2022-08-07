@@ -48,16 +48,16 @@ const SelectAddressBottomSheet: React.FC<AddressBottomSheetProps> = ({
 						<Text>You don't have any addresses added.</Text>
 					</View> :
 					<View style={{ flex: 1 }}>
-						<RadioButton.Group onValueChange={handleRadioButtonChange} value={preferredAddress!.id}>
+						<RadioButton.Group onValueChange={handleRadioButtonChange} value={(preferredAddress as any).id}>
 							<FlatList
 								ItemSeparatorComponent={AppDivider}
-								keyExtractor={(item) => item.id}
+								keyExtractor={(item: any) => item.id}
 								data={addresses}
 								renderItem={({ item }) => {
 									return (
 										<AddressItem
 											address={item}
-											TailingComponent={<RadioButton value={item.id} />}
+											TailingComponent={<RadioButton value={item.id as any} />}
 										/>
 									);
 								}}

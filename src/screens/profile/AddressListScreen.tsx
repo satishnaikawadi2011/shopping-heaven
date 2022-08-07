@@ -26,7 +26,7 @@ const AddressListScreen = () => {
 				</View> :
 				<FlatList
 					ItemSeparatorComponent={AppDivider}
-					keyExtractor={(item) => item.id}
+					keyExtractor={(item: any) => item.id}
 					data={addresses}
 					renderItem={({ item }) => {
 						return (
@@ -34,7 +34,7 @@ const AddressListScreen = () => {
 								address={item}
 								TailingComponent={
 									<MaterialCommunityIcons
-										onPress={() => removeAddress(item.id)}
+										onPress={() => removeAddress(item.id as any)}
 										name="delete"
 										size={30}
 										color={MuiColors.red600}
